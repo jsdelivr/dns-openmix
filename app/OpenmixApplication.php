@@ -14,7 +14,6 @@ class OpenmixApplication implements Lifecycle
         'leap-ua' => 'leap-ua.jsdelivr.net',
         'prome-it' => 'prome-it.jsdelivr.net',
         'exvm-sg' => 'exvm-sg.jsdelivr.net',
-        'jack-it' => 'jack-it.jsdelivr.net',
         'knight-nl' => 'knight-nl.jsdelivr.net',
         'alpine-ch' => 'alpine-ch.jsdelivr.net',
         'jetdi-id' => 'jetdi-id.jsdelivr.net',
