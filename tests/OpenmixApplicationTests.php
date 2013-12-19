@@ -34,12 +34,12 @@ class OpenmixApplicationTests extends PHPUnit_Framework_TestCase
         
         // Reason codes
         $config->expects($this->at($call_index++))->method('declareReasonCode')->with('A');
-        $config->expects($this->at($call_index++))->method('declareReasonCode')->with('B');
-        $config->expects($this->at($call_index++))->method('declareReasonCode')->with('C');
+        //$config->expects($this->at($call_index++))->method('declareReasonCode')->with('B');
+        //$config->expects($this->at($call_index++))->method('declareReasonCode')->with('C');
         $config->expects($this->at($call_index++))->method('declareReasonCode')->with('D');
         $config->expects($this->at($call_index++))->method('declareReasonCode')->with('E');
         $config->expects($this->at($call_index++))->method('declareReasonCode')->with('F');
-        $config->expects($this->exactly(6))->method('declareReasonCode');
+        $config->expects($this->exactly(4))->method('declareReasonCode');
 
         // Input
         $config->expects($this->at($call_index++))

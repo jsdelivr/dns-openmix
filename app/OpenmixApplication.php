@@ -36,19 +36,16 @@ class OpenmixApplication implements Lifecycle
     // It should do no harm to include the public providers for consideration,
     // so these overrides should generally be used to create supersets that include
     // the default providers.
+    //
+    // For the most part, we'll only put ASNs in here where Radar data has problems
+    // and needs research.
     public $asn_overrides = array(
-        '42473' => array( 'prome-it', 'maxcdn' ), // cdn_net seems unfairly favored here
-        //'25137' => array( 'leap-pt', 'maxcdn', 'cdn_net' ), // Portugal pingdom (handled at the country level)
-        //'32489' => array( 'maxcdn', 'cdn_net' ), // Toronto pingdom (handled by the default)
-        //'17090' => array( 'maxcdn', 'cdn_net' ), // Philadelphia 2, PA (handled by the default)
-        //'32613' => array( 'maxcdn', 'cdn_net' ), // Montreal, Canada (handled by the default)
-        //'49367' => array( 'prome-it', 'maxcdn', 'cdn_net' ), // Italy Milan (handled at the country level)
-        //'39605' => array( 'maxcdn', 'cdn_net' ), // Paris France (handled by the default)
-        //'8972' => array( 'maxcdn', 'cdn_net' ), // Strasbourg France (handled by the default)
-        //'16265' => array( 'maxcdn', 'cdn_net' ), // Amsterdam (handled by the default)
-        //'36351' => array( 'maxcdn', 'cdn_net' ), // San Jose (handled by the default)
-        //'36114' => array( 'maxcdn', 'cdn_net' ), // Las Vegas 2 (handled by the default)
-        //'30736' => array( 'maxcdn', 'cdn_net' ), // Denmark (handled by the default)
+        // cdn_net seems unfairly favored in Radar data here.  Needs research.
+        '42473' => array( 'prome-it', 'maxcdn' ),
+
+        // Las Vegas 2: Seeing some strange Radar data for this ASN.  Needs research.
+        // Force it to maxcdn for now
+        '36114' => array( 'maxcdn', ),
     );
 
     // country codes mapped to an array of one or more provider aliases
@@ -91,8 +88,8 @@ class OpenmixApplication implements Lifecycle
     
     public $reasons = array(
         'A', // RTT
-        'B', // Country override
-        'C', // ASN override
+        //'B', // reserved
+        //'C', // reserved
         'D', // Single available candidate
         'E', // None available
         'F', // No RTT data for available candidates
