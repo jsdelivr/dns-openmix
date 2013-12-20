@@ -55,19 +55,22 @@ class OpenmixApplication implements Lifecycle
     // so these overrides should generally be used to create supersets that include
     // the default providers
     public $country_overrides = array(
-        'IN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'SG' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'MY' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'HK' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'CN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'UA' => array( 'leap-ua', 'maxcdn', 'cdn_net' ),
-        'PT' => array( 'leap-pt', 'maxcdn', 'cdn_net' ),
-        'TH' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
         'AT' => array( 'prome-it', 'maxcdn', 'cdn_net' ),
-        'KR' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'ID' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'VN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'CH' => array( 'alpine-ch', 'maxcdn', 'cdn_net' ),
+        'CN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'FR' => array( 'finn-fr', 'maxcdn', 'cdn_net' ),
+        'HK' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'ID' => array( 'jetdi-id', 'exvm-sg', 'maxcdn', 'cdn_net' ),
         'IT' => array( 'prome-it', 'maxcdn', 'cdn_net' ),
+        'IN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'KR' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'MY' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'NL' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
+        'PT' => array( 'leap-pt', 'maxcdn', 'cdn_net' ),
+        'SG' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'TH' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'UA' => array( 'leap-ua', 'maxcdn', 'cdn_net' ),
+        'VN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
     );
 
     // The thresholds (%) below which we consider a CDN unavailable
