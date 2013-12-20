@@ -47,6 +47,12 @@ class OpenmixApplication implements Lifecycle
         '36114' => array( 'maxcdn' ),
         '36351' => array( 'maxcdn' ), //san jose + Washington
         '15003' => array( 'maxcdn' ), //Chicago
+        '8972' => array( 'maxcdn' ), //Strasbourg 
+        '49367' => array( 'prome-it' ), //Milan 
+        '32489' => array( 'maxcdn' ), //Canada 
+        '25137' => array( 'leap-pt' ), //Portugal 
+        '16265' => array( 'maxcdn' ), //Amsterdam 
+        '30736' => array( 'knight-nl' ), //Denmark 
     );
 
     // country codes mapped to an array of one or more provider aliases
@@ -58,21 +64,21 @@ class OpenmixApplication implements Lifecycle
     // the default providers
     public $country_overrides = array(
         'CH' => array( 'alpine-ch', 'maxcdn', 'cdn_net' ),
-        'CN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'CN' => array( 'exvm-sg', 'jetdi-id' ),
         'NL' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
-        'HK' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'ID' => array( 'jetdi-id', 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'HK' => array( 'exvm-sg', 'jetdi-id' ),
+        'ID' => array( 'jetdi-id', 'exvm-sg' ),
         'IT' => array( 'prome-it', 'maxcdn', 'cdn_net' ),
-        'IN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'KR' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'MY' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'IN' => array( 'exvm-sg', 'jetdi-id' ),
+        'KR' => array( 'exvm-sg', 'jetdi-id' ),
+        'MY' => array( 'exvm-sg', 'jetdi-id' ),
         'PT' => array( 'leap-pt', 'maxcdn', 'cdn_net' ),
-        'SG' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'TH' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'SG' => array( 'exvm-sg', 'jetdi-id' ),
+        'TH' => array( 'exvm-sg', 'jetdi-id' ),
         'UA' => array( 'knight-nl', 'leap-ua', 'maxcdn' ),
         'RU' => array( 'knight-nl', 'leap-ua', 'maxcdn', 'CDN.NET' ),
         'GR' => array( 'knight-nl', 'finn-fr', 'maxcdn', 'CDN.NET' ),
-        'VN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'VN' => array( 'exvm-sg', 'jetdi-id' ),
         'RO' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
         'PT' => array( 'leap-pt', 'maxcdn', 'cdn_net' ),
         'DE' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
