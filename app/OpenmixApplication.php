@@ -40,11 +40,11 @@ class OpenmixApplication implements Lifecycle
     // and needs research.
     public $asn_overrides = array(
         // cdn_net seems unfairly favored in Radar data here.  Needs research.
-        '42473' => array( 'prome-it', 'maxcdn' ),
+        '42473' => array( 'prome-it'),
 
         // Las Vegas 2: Seeing some strange Radar data for this ASN.  Needs research.
         // Force it to maxcdn for now
-        '36114' => array( 'maxcdn', ),
+        '36114' => array( 'maxcdn' ),
         '36351' => array( 'maxcdn' ), //san jose + Washington
         '15003' => array( 'maxcdn' ), //Chicago
     );
@@ -59,7 +59,7 @@ class OpenmixApplication implements Lifecycle
     public $country_overrides = array(
         'CH' => array( 'alpine-ch', 'maxcdn', 'cdn_net' ),
         'CN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'NL' => array( 'knight-nl', 'finn-fr', 'maxcdn', 'cdn_net' ),
+        'NL' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
         'HK' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
         'ID' => array( 'jetdi-id', 'exvm-sg', 'maxcdn', 'cdn_net' ),
         'IT' => array( 'prome-it', 'maxcdn', 'cdn_net' ),
