@@ -45,6 +45,8 @@ class OpenmixApplication implements Lifecycle
         // Las Vegas 2: Seeing some strange Radar data for this ASN.  Needs research.
         // Force it to maxcdn for now
         '36114' => array( 'maxcdn', ),
+        '36351' => array( 'maxcdn' ), //san jose + Washington
+        '15003' => array( 'maxcdn' ), //Chicago
     );
 
     // country codes mapped to an array of one or more provider aliases
@@ -55,22 +57,30 @@ class OpenmixApplication implements Lifecycle
     // so these overrides should generally be used to create supersets that include
     // the default providers
     public $country_overrides = array(
-        'AT' => array( 'prome-it', 'maxcdn', 'cdn_net' ),
         'CH' => array( 'alpine-ch', 'maxcdn', 'cdn_net' ),
         'CN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'FR' => array( 'finn-fr', 'maxcdn', 'cdn_net' ),
+        'NL' => array( 'knight-nl', 'finn-fr', 'maxcdn', 'cdn_net' ),
         'HK' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
         'ID' => array( 'jetdi-id', 'exvm-sg', 'maxcdn', 'cdn_net' ),
         'IT' => array( 'prome-it', 'maxcdn', 'cdn_net' ),
         'IN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
         'KR' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
         'MY' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'NL' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
         'PT' => array( 'leap-pt', 'maxcdn', 'cdn_net' ),
         'SG' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
         'TH' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
-        'UA' => array( 'leap-ua', 'maxcdn', 'cdn_net' ),
+        'UA' => array( 'knight-nl', 'leap-ua', 'maxcdn' ),
+        'RU' => array( 'knight-nl', 'leap-ua', 'maxcdn', 'CDN.NET' ),
+        'GR' => array( 'knight-nl', 'finn-fr', 'maxcdn', 'CDN.NET' ),
         'VN' => array( 'exvm-sg', 'maxcdn', 'cdn_net' ),
+        'RO' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
+        'PT' => array( 'leap-pt', 'maxcdn', 'cdn_net' ),
+        'DE' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
+        'NO' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
+        'RS' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
+        'DK' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
+        'AT' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
+        'FR' => array( 'finn-fr', 'knight-nl', 'maxcdn', 'cdn_net' ),
     );
 
     // The thresholds (%) below which we consider a CDN unavailable
