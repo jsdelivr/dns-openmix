@@ -39,17 +39,15 @@ class OpenmixApplication implements Lifecycle
     // For the most part, we'll only put ASNs in here where Radar data has problems
     // and needs research.
     public $asn_overrides = array(
-        // Las Vegas 2: Seeing some strange Radar data for this ASN.  Needs research.
-        // Force it to maxcdn for now
-        '36114' => array( 'maxcdn' ),
-  //      '36351' => array( 'maxcdn' ), //san jose + Washington
-  //      '15003' => array( 'maxcdn' ), //Chicago
-        '8972' => array( 'maxcdn' ), //Strasbourg 
-        '42473' => array( 'prome-it', 'maxcdn' ), //Milan 
-        '32489' => array( 'maxcdn' ), //Canada 
-        '25137' => array( 'leap-pt' ), //Portugal 
-        '16265' => array( 'maxcdn' ), //Amsterdam 
-        '30736' => array( 'knight-nl' ), //Denmark 
+        '36114' => array( 'maxcdn' ), // Las Vegas 2
+        '36351' => array( 'maxcdn' ), // San Jose + Washington
+        '15003' => array( 'maxcdn' ), // Chicago
+        '8972' => array( 'maxcdn' ), // Strasbourg 
+        '42473' => array( 'prome-it', 'maxcdn' ), // Milan 
+        '32489' => array( 'maxcdn' ), // Canada 
+        '25137' => array( 'leap-pt' ), // Portugal 
+        '16265' => array( 'maxcdn' ), // Amsterdam 
+        '30736' => array( 'knight-nl' ), // Denmark 
     );
 
     // country codes mapped to an array of one or more provider aliases
@@ -69,7 +67,6 @@ class OpenmixApplication implements Lifecycle
         'IN' => array( 'exvm-sg', 'jetdi-id' ),
         'KR' => array( 'exvm-sg', 'jetdi-id' ),
         'MY' => array( 'exvm-sg', 'jetdi-id' ),
-        'PT' => array( 'leap-pt', 'maxcdn', 'cdn_net' ),
         'SG' => array( 'exvm-sg', 'jetdi-id' ),
         'TH' => array( 'exvm-sg', 'jetdi-id' ),
         'UA' => array( 'knight-nl', 'leap-ua', 'maxcdn' ),
@@ -87,7 +84,8 @@ class OpenmixApplication implements Lifecycle
     );
 
     // The thresholds (%) below which we consider a CDN unavailable
-    public $availability_threshold = 50;
+    public $normal_availability_threshold = 90;
+    public $pingdom_availability_threshold = 50;
     public $sonar_threshold = 90;
     public $min_valid_rtt = 10;
     public $ttl = 20;
@@ -148,11 +146,15 @@ class OpenmixApplication implements Lifecycle
         //print("\nSonar:" . print_r($sonar, true));
 
         // Identify subpopulation
+        $avalability_threshold = $this->normal_availability_threshold;
         $subpopulation = $this->default_providers;
         if (array_key_exists($asn, $this->asn_overrides)) {
+            //print("\nASN override!");
             $subpopulation = $this->asn_overrides[$asn];
+            $avalability_threshold = $this->pingdom_availability_threshold;
         }
         elseif (array_key_exists($country, $this->country_overrides)) {
+            //print("\nCountry override!");
             $subpopulation = $this->country_overrides[$country];
         }
         //print("\nSubpopulation:" . print_r($subpopulation, true));
@@ -162,7 +164,7 @@ class OpenmixApplication implements Lifecycle
             $good = true;
             if (array_key_exists($alias, $avail)) {
                 $value = $avail[$alias];
-                if ($value < $this->availability_threshold) {
+                if ($value < $avalability_threshold) {
                     $good = false;
                 }
             }

@@ -324,6 +324,19 @@ class OpenmixApplicationTests extends PHPUnit_Framework_TestCase
                 'alias' => 'c',
                 'reason' => 'D',
             ),
+            array(
+                'description' => 'Production scenario; data says CDN.NET is fastest',
+                'geo_asn' => 12345,
+                'geo_country' => 'whatever',
+                'enable_edns' => 1,
+                'edns_asn' => 30736,
+                'edns_country' => 'DK',
+                'avail' => from_context('avail', '12-5-0-0=0;13-6-0-0=0;4-2-0-0=30736;5-0-11358-0=100.000000;5-0-10148-0=100.000000;5-0-7844-0=100.000000;5-0-7845-0=100.000000;5-0-7859-0=100.000000;5-0-8423-0=100.000000;5-0-8506-0=100.000000;5-0-8593-0=100.000000;5-0-10077-0=100.000000;5-0-10052-0=100.000000;1-0-428-2=61.599998;1-0-275-2=69.199997;1-0-7844-2=97.111115;1-0-7845-2=78.166664;1-0-7859-2=62.500000;1-0-8423-2=276.454559;1-0-8506-2=53.666668;1-0-8593-2=67.285713;1-0-10077-2=345.250000;1-0-10052-2=68.833336;1-3-275-2=100.000000;1-3-428-2=100.000000;12-4-0=XX;4-1-0=DK;'),
+                'sonar' => from_context('sonar', '12-5-0-0=0;13-6-0-0=0;4-2-0-0=30736;5-0-11358-0=100.000000;5-0-10148-0=100.000000;5-0-7844-0=100.000000;5-0-7845-0=100.000000;5-0-7859-0=100.000000;5-0-8423-0=100.000000;5-0-8506-0=100.000000;5-0-8593-0=100.000000;5-0-10077-0=100.000000;5-0-10052-0=100.000000;1-0-428-2=61.599998;1-0-275-2=69.199997;1-0-7844-2=97.111115;1-0-7845-2=78.166664;1-0-7859-2=62.500000;1-0-8423-2=276.454559;1-0-8506-2=53.666668;1-0-8593-2=67.285713;1-0-10077-2=345.250000;1-0-10052-2=68.833336;1-3-275-2=100.000000;1-3-428-2=100.000000;12-4-0=XX;4-1-0=DK;'),
+                'rtt' => from_context('rtt', '12-5-0-0=0;13-6-0-0=0;4-2-0-0=30736;5-0-11358-0=100.000000;5-0-10148-0=100.000000;5-0-7844-0=100.000000;5-0-7845-0=100.000000;5-0-7859-0=100.000000;5-0-8423-0=100.000000;5-0-8506-0=100.000000;5-0-8593-0=100.000000;5-0-10077-0=100.000000;5-0-10052-0=100.000000;1-0-428-2=61.599998;1-0-275-2=69.199997;1-0-7844-2=97.111115;1-0-7845-2=78.166664;1-0-7859-2=62.500000;1-0-8423-2=276.454559;1-0-8506-2=53.666668;1-0-8593-2=67.285713;1-0-10077-2=345.250000;1-0-10052-2=68.833336;1-3-275-2=100.000000;1-3-428-2=100.000000;12-4-0=XX;4-1-0=DK;'),
+                'alias' => 'cdn_net',
+                'reason' => 'A',
+            ),
         );
         
         $test_index = 0;
@@ -341,9 +354,6 @@ class OpenmixApplicationTests extends PHPUnit_Framework_TestCase
 
             if (array_key_exists('default_providers', $i)) {
                 $application->default_providers = $i['default_providers'];
-            }
-            else {
-                $application->default_providers = array();
             }
 
             if (array_key_exists('last_resort_provider', $i)) {
@@ -441,6 +451,44 @@ class OpenmixApplicationTests extends PHPUnit_Framework_TestCase
             $this->verifyMockObjects();
         }
     }
+}
+
+function from_context($type, $context) {
+
+    $aliases = array(
+        '11358' => 'cdn_net',
+        '10148' => 'maxcdn',
+        '7844' => 'leap-pt',
+        '7845' => 'leap-ua',
+        '7859' => 'prome-it',
+        '8423' => 'exvm-sg',
+        '8506' => 'knight-nl',
+        '8593' => 'alpine-ch',
+        '10077' => 'jetdi-id',
+        '10052' => 'finn-fr',
+        '275' => 'maxcdn',
+        '428' => 'cdn_net',
+    );
+
+    $result = array();
+    if ($type == 'sonar') {
+        preg_match_all('/5-0-(\d+)-\d=(\d+\.\d+)/', $context, $matches);
+    }
+    elseif ($type == 'avail') {
+        preg_match_all('/1-3-(\d+)-\d=(\d+\.\d+)/', $context, $matches);
+    }
+    elseif ($type == 'rtt') {
+        preg_match_all('/1-0-(\d+)-\d=(\d+\.\d+)/', $context, $matches);
+    }
+    else {
+        throw Exception("Unexpected type: $type");
+    }
+    //print("\nMatches:" . print_r($matches, true));
+    for ($i = 0; $i < count($matches[1]); $i++) {
+        $result[$aliases[$matches[1][$i]]] = floatval($matches[2][$i]);
+    }
+    //print("\nResult:" . print_r($result, true));
+    return $result;
 }
 
 ?>
