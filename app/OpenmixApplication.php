@@ -45,12 +45,12 @@ class OpenmixApplication implements Lifecycle
         // Las Vegas 2: Seeing some strange Radar data for this ASN.  Needs research.
         // Force it to maxcdn for now
         '36114' => array( 'maxcdn' ),
-        '36351' => array( 'maxcdn' ), //san jose + Washington
-        '15003' => array( 'maxcdn' ), //Chicago
+  //      '36351' => array( 'maxcdn' ), //san jose + Washington
+  //      '15003' => array( 'maxcdn' ), //Chicago
         '8972' => array( 'maxcdn' ), //Strasbourg 
-        '49367' => array( 'prome-it' ), //Milan 
+        '49367' => array( 'prome-it', 'maxcdn' ), //Milan 
         '32489' => array( 'maxcdn' ), //Canada 
-        '25137' => array( 'leap-pt' ), //Portugal 
+   //     '25137' => array( 'leap-pt' ), //Portugal 
         '16265' => array( 'maxcdn' ), //Amsterdam 
         '30736' => array( 'knight-nl' ), //Denmark 
     );
@@ -90,7 +90,7 @@ class OpenmixApplication implements Lifecycle
     );
 
     // The thresholds (%) below which we consider a CDN unavailable
-    public $availability_threshold = 90;
+    public $availability_threshold = 50;
     public $sonar_threshold = 90;
     public $min_valid_rtt = 10;
     public $ttl = 20;
