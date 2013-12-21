@@ -39,18 +39,15 @@ class OpenmixApplication implements Lifecycle
     // For the most part, we'll only put ASNs in here where Radar data has problems
     // and needs research.
     public $asn_overrides = array(
-        // cdn_net seems unfairly favored in Radar data here.  Needs research.
-        '42473' => array( 'prome-it'),
-
         // Las Vegas 2: Seeing some strange Radar data for this ASN.  Needs research.
         // Force it to maxcdn for now
         '36114' => array( 'maxcdn' ),
   //      '36351' => array( 'maxcdn' ), //san jose + Washington
   //      '15003' => array( 'maxcdn' ), //Chicago
         '8972' => array( 'maxcdn' ), //Strasbourg 
-        '49367' => array( 'prome-it', 'maxcdn' ), //Milan 
+        '42473' => array( 'prome-it', 'maxcdn' ), //Milan 
         '32489' => array( 'maxcdn' ), //Canada 
-   //     '25137' => array( 'leap-pt' ), //Portugal 
+        '25137' => array( 'leap-pt' ), //Portugal 
         '16265' => array( 'maxcdn' ), //Amsterdam 
         '30736' => array( 'knight-nl' ), //Denmark 
     );
