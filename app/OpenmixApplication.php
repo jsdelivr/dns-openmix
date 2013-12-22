@@ -43,11 +43,11 @@ class OpenmixApplication implements Lifecycle
         '36351' => array( 'maxcdn' ), // San Jose + Washington
         '15003' => array( 'maxcdn' ), // Chicago
         '8972' => array( 'maxcdn' ), // Strasbourg 
-        '42473' => array( 'prome-it', 'maxcdn' ), // Milan 
+        '42473' => array( 'prome-it' ), // Milan 
         '32489' => array( 'maxcdn' ), // Canada 
         '25137' => array( 'leap-pt' ), // Portugal 
         '16265' => array( 'maxcdn' ), // Amsterdam 
-        '30736' => array( 'knight-nl' ), // Denmark 
+        '30736' => array( 'knight-nl', 'maxcdn' ), // Denmark 
     );
 
     // country codes mapped to an array of one or more provider aliases
