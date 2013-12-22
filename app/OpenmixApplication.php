@@ -69,6 +69,7 @@ class OpenmixApplication implements Lifecycle
         'MY' => array( 'exvm-sg', 'jetdi-id' ),
         'SG' => array( 'exvm-sg', 'jetdi-id' ),
         'TH' => array( 'exvm-sg', 'jetdi-id' ),
+        'JP' => array( 'exvm-sg', 'jetdi-id', 'cdn_net', 'maxcdn' ),
         'UA' => array( 'knight-nl', 'leap-ua', 'maxcdn' ),
         'RU' => array( 'knight-nl', 'leap-ua', 'maxcdn', 'cdn_net' ),
         'GR' => array( 'knight-nl', 'finn-fr', 'maxcdn', 'cdn_net' ),
