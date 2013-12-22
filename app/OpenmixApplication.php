@@ -47,7 +47,7 @@ class OpenmixApplication implements Lifecycle
         '32489' => array( 'maxcdn' ), // Canada 
         '25137' => array( 'leap-pt' ), // Portugal 
         '16265' => array( 'maxcdn' ), // Amsterdam 
-        '30736' => array( 'knight-nl', 'maxcdn' ), // Denmark 
+        '30736' => array( 'cdn_net' ), // Denmark 
     );
 
     // country codes mapped to an array of one or more provider aliases
@@ -79,7 +79,7 @@ class OpenmixApplication implements Lifecycle
         'DE' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
         'NO' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
         'RS' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
-        'DK' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
+        'DK' => array( 'maxcdn', 'cdn_net' ),
         'AT' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
         'FR' => array( 'finn-fr', 'knight-nl', 'maxcdn', 'cdn_net' ),
     );
