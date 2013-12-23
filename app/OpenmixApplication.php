@@ -89,7 +89,7 @@ class OpenmixApplication implements Lifecycle
     public $normal_availability_threshold = 90;
     public $pingdom_availability_threshold = 50;
     public $sonar_threshold = 95;
-    public $min_valid_rtt = 10;
+    public $min_valid_rtt = 5;
     public $ttl = 20;
     
     public $reasons = array(
