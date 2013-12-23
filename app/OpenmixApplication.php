@@ -81,13 +81,14 @@ class OpenmixApplication implements Lifecycle
         'RS' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
         'DK' => array( 'maxcdn', 'cdn_net' ),
         'AT' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
+        'FI' => array( 'finn-fr', 'knight-nl', 'maxcdn'),
         'FR' => array( 'finn-fr', 'knight-nl', 'maxcdn', 'cdn_net' ),
     );
 
     // The thresholds (%) below which we consider a CDN unavailable
     public $normal_availability_threshold = 90;
     public $pingdom_availability_threshold = 50;
-    public $sonar_threshold = 90;
+    public $sonar_threshold = 95;
     public $min_valid_rtt = 10;
     public $ttl = 20;
     
