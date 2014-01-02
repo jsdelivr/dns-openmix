@@ -326,8 +326,6 @@ class OpenmixApplicationTests extends PHPUnit_Framework_TestCase
             ),
             array(
                 'description' => 'Production scenario; data says CDN.NET is fastest',
-                'geo_asn' => 12345,
-                'geo_country' => 'whatever',
                 'enable_edns' => 1,
                 'edns_asn' => 30736,
                 'edns_country' => 'DK',
@@ -387,21 +385,26 @@ class OpenmixApplicationTests extends PHPUnit_Framework_TestCase
             }
 
             $request_call_index = 0;
-            $request->expects($this->at($request_call_index++))
-                ->method('geo')
-                ->with('integer:geo:asn')
-                ->will($this->returnValue($i['geo_asn']));
-                
-            $request->expects($this->at($request_call_index++))
-                ->method('geo')
-                ->with('string:geo:country_iso')
-                ->will($this->returnValue($i['geo_country']));
-                
+
             $request->expects($this->at($request_call_index++))
                 ->method('geo')
                 ->with('integer:enable_edns:enable_edns')
                 ->will($this->returnValue($i['enable_edns']));
-                
+
+            if (array_key_exists('geo_asn', $i)) {
+                $request->expects($this->at($request_call_index++))
+                    ->method('geo')
+                    ->with('integer:geo:asn')
+                    ->will($this->returnValue($i['geo_asn']));
+            }
+
+            if (array_key_exists('geo_country', $i)) {
+                $request->expects($this->at($request_call_index++))
+                    ->method('geo')
+                    ->with('string:geo:country_iso')
+                    ->will($this->returnValue($i['geo_country']));
+            }
+
             if (array_key_exists('edns_asn', $i)) {
                 $request->expects($this->at($request_call_index++))
                     ->method('geo')

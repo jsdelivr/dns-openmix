@@ -133,12 +133,9 @@ class OpenmixApplication implements Lifecycle
      **/
     public function service($request, $response, $utilities)
     {
-        $asn = $request->geo(GeoProperties::ASN);
-        $country = $request->geo(GeoProperties::COUNTRY);
-        if ($request->geo(EDNSProperties::ENABLE)) {
-            $asn = $request->geo(EDNSProperties::ASN);
-            $country = $request->geo(EDNSProperties::COUNTRY);
-        }
+        $edns_enabled = $request->geo(EDNSProperties::ENABLE);
+        $asn = $request->geo($edns_enabled ? EDNSProperties::ASN : GeoProperties::ASN);
+        $country = $request->geo($edns_enabled ? EDNSProperties::COUNTRY : GeoProperties::COUNTRY);
         //print("\nASN: $asn");
         //print("\nCountry: $country");
         
