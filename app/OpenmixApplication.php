@@ -83,6 +83,7 @@ class OpenmixApplication implements Lifecycle
         'AT' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
         'FI' => array( 'finn-fr', 'knight-nl', 'maxcdn'),
         'FR' => array( 'finn-fr', 'knight-nl', 'maxcdn', 'cdn_net' ),
+        'MA' => array( 'finn-fr', 'knight-nl', 'maxcdn', 'cdn_net' ),
     );
 
     // The thresholds (%) below which we consider a CDN unavailable
