@@ -8,7 +8,6 @@ class OpenmixApplication implements Lifecycle
 {
     // Map provider aliases to cnames
     public $cnames = array(
-        'cdn_net' => '531151672.r.worldcdn.net',
         'maxcdn' => 'jsdelivr3.dak.netdna-cdn.com',
         'leap-pt' => 'leap-pt.jsdelivr.net',
         'leap-ua' => 'leap-ua.jsdelivr.net',
@@ -21,7 +20,7 @@ class OpenmixApplication implements Lifecycle
     );
 
     // If you add or subtract any public providers, update these!
-    public $default_providers = array( 'maxcdn', 'cdn_net' );
+    public $default_providers = array( 'maxcdn' );
 
     // The most likely to be available; selected as a last resort only
     public $last_resort_provider = 'maxcdn';
@@ -46,8 +45,7 @@ class OpenmixApplication implements Lifecycle
         '42473' => array( 'prome-it' ), // Milan 
         '32489' => array( 'maxcdn' ), // Canada 
         '25137' => array( 'leap-pt' ), // Portugal 
-        '16265' => array( 'maxcdn' ), // Amsterdam 
-        '30736' => array( 'cdn_net' ), // Denmark 
+        '16265' => array( 'maxcdn' ) // Amsterdam 
     );
 
     // country codes mapped to an array of one or more provider aliases
@@ -58,32 +56,32 @@ class OpenmixApplication implements Lifecycle
     // so these overrides should generally be used to create supersets that include
     // the default providers
     public $country_overrides = array(
-        'CH' => array( 'alpine-ch', 'maxcdn', 'cdn_net' ),
+        'CH' => array( 'alpine-ch', 'maxcdn'),
         'CN' => array( 'exvm-sg', 'jetdi-id' ),
-        'NL' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
+        'NL' => array( 'knight-nl', 'maxcdn' ),
         'HK' => array( 'exvm-sg', 'jetdi-id' ),
         'ID' => array( 'jetdi-id', 'exvm-sg' ),
-        'IT' => array( 'prome-it', 'maxcdn', 'cdn_net' ),
+        'IT' => array( 'prome-it', 'maxcdn' ),
         'IN' => array( 'exvm-sg', 'jetdi-id' ),
         'KR' => array( 'exvm-sg', 'jetdi-id' ),
         'MY' => array( 'exvm-sg', 'jetdi-id' ),
         'SG' => array( 'exvm-sg', 'jetdi-id' ),
         'TH' => array( 'exvm-sg', 'jetdi-id' ),
-        'JP' => array( 'exvm-sg', 'jetdi-id', 'cdn_net', 'maxcdn' ),
+        'JP' => array( 'exvm-sg', 'jetdi-id', 'maxcdn' ),
         'UA' => array( 'knight-nl', 'leap-ua', 'maxcdn' ),
-        'RU' => array( 'knight-nl', 'leap-ua', 'maxcdn', 'cdn_net' ),
-        'GR' => array( 'knight-nl', 'finn-fr', 'maxcdn', 'cdn_net' ),
+        'RU' => array( 'knight-nl', 'leap-ua', 'maxcdn', ),
+        'GR' => array( 'knight-nl', 'finn-fr', 'maxcdn', ),
         'VN' => array( 'exvm-sg', 'jetdi-id' ),
-        'RO' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
-        'PT' => array( 'leap-pt', 'maxcdn', 'cdn_net' ),
-        'DE' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
-        'NO' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
-        'RS' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
-        'DK' => array( 'maxcdn', 'cdn_net' ),
-        'AT' => array( 'knight-nl', 'maxcdn', 'cdn_net' ),
+        'RO' => array( 'knight-nl', 'maxcdn' ),
+        'PT' => array( 'leap-pt', 'maxcdn' ),
+        'DE' => array( 'knight-nl', 'maxcdn' ),
+        'NO' => array( 'knight-nl', 'maxcdn' ),
+        'RS' => array( 'knight-nl', 'maxcdn' ),
+        'DK' => array( 'maxcdn' ),
+        'AT' => array( 'knight-nl', 'maxcdn' ),
         'FI' => array( 'finn-fr', 'knight-nl', 'maxcdn'),
-        'FR' => array( 'finn-fr', 'knight-nl', 'maxcdn', 'cdn_net' ),
-        'MA' => array( 'finn-fr', 'knight-nl', 'leap-pt', 'alpine-ch', 'prome-it', 'maxcdn', 'cdn_net' ),
+        'FR' => array( 'finn-fr', 'knight-nl', 'maxcdn' ),
+        'MA' => array( 'finn-fr', 'knight-nl', 'leap-pt', 'alpine-ch', 'prome-it', 'maxcdn' ),
     );
 
     // The thresholds (%) below which we consider a CDN unavailable
