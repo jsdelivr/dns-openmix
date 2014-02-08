@@ -8,6 +8,7 @@ class OpenmixApplication implements Lifecycle
 {
     // Map provider aliases to cnames
     public $cnames = array(
+        'cloudflare' => 'cf.jsdelivr.net',
         'maxcdn' => 'jsdelivr3.dak.netdna-cdn.com',
         'leap-pt' => 'leap-pt.jsdelivr.net',
         'leap-ua' => 'leap-ua.jsdelivr.net',
@@ -20,7 +21,7 @@ class OpenmixApplication implements Lifecycle
     );
 
     // If you add or subtract any public providers, update these!
-    public $default_providers = array( 'maxcdn' );
+    public $default_providers = array( 'maxcdn', 'cloudflare' );
 
     // The most likely to be available; selected as a last resort only
     public $last_resort_provider = 'maxcdn';
@@ -56,32 +57,32 @@ class OpenmixApplication implements Lifecycle
     // so these overrides should generally be used to create supersets that include
     // the default providers
     public $country_overrides = array(
-        'CH' => array( 'alpine-ch', 'maxcdn'),
-        'CN' => array( 'exvm-sg', 'jetdi-id' ),
-        'NL' => array( 'knight-nl', 'maxcdn' ),
-        'HK' => array( 'exvm-sg', 'jetdi-id' ),
-        'ID' => array( 'jetdi-id', 'exvm-sg' ),
-        'IT' => array( 'prome-it', 'maxcdn' ),
-        'IN' => array( 'exvm-sg', 'jetdi-id' ),
-        'KR' => array( 'exvm-sg', 'jetdi-id' ),
-        'MY' => array( 'exvm-sg', 'jetdi-id' ),
-        'SG' => array( 'exvm-sg', 'jetdi-id' ),
-        'TH' => array( 'exvm-sg', 'jetdi-id' ),
-        'JP' => array( 'exvm-sg', 'jetdi-id', 'maxcdn' ),
-        'UA' => array( 'knight-nl', 'leap-ua', 'maxcdn' ),
-        'RU' => array( 'knight-nl', 'leap-ua', 'maxcdn', ),
-        'GR' => array( 'knight-nl', 'finn-fr', 'maxcdn', ),
-        'VN' => array( 'exvm-sg', 'jetdi-id' ),
-        'RO' => array( 'knight-nl', 'maxcdn' ),
-        'PT' => array( 'leap-pt', 'maxcdn' ),
-        'DE' => array( 'knight-nl', 'maxcdn' ),
-        'NO' => array( 'knight-nl', 'maxcdn' ),
-        'RS' => array( 'knight-nl', 'maxcdn' ),
-        'DK' => array( 'maxcdn' ),
-        'AT' => array( 'knight-nl', 'maxcdn' ),
-        'FI' => array( 'finn-fr', 'knight-nl', 'maxcdn'),
-        'FR' => array( 'finn-fr', 'knight-nl', 'maxcdn' ),
-        'MA' => array( 'finn-fr', 'knight-nl', 'leap-pt', 'alpine-ch', 'prome-it', 'maxcdn' ),
+        'CH' => array( 'alpine-ch', 'maxcdn', 'cloudflare'),
+        'CN' => array( 'exvm-sg', 'jetdi-id', 'cloudflare'),
+        'NL' => array( 'knight-nl', 'maxcdn', 'cloudflare'),
+        'HK' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
+        'ID' => array( 'jetdi-id', 'exvm-sg', 'cloudflare' ),
+        'IT' => array( 'prome-it', 'maxcdn', 'cloudflare' ),
+        'IN' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
+        'KR' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
+        'MY' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
+        'SG' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
+        'TH' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
+        'JP' => array( 'exvm-sg', 'jetdi-id', 'cloudflare', 'maxcdn' ),
+        'UA' => array( 'knight-nl', 'leap-ua', 'maxcdn', 'cloudflare' ),
+        'RU' => array( 'knight-nl', 'leap-ua', 'maxcdn',, 'cloudflare' ),
+        'GR' => array( 'knight-nl', 'finn-fr', 'maxcdn',, 'cloudflare' ),
+        'VN' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
+        'RO' => array( 'knight-nl', 'maxcdn', 'cloudflare' ),
+        'PT' => array( 'leap-pt', 'maxcdn', 'cloudflare' ),
+        'DE' => array( 'knight-nl', 'maxcdn', 'cloudflare' ),
+        'NO' => array( 'knight-nl', 'maxcdn', 'cloudflare' ),
+        'RS' => array( 'knight-nl', 'maxcdn', 'cloudflare' ),
+        'DK' => array( 'maxcdn' , 'cloudflare'),
+        'AT' => array( 'knight-nl', 'maxcdn', 'cloudflare' ),
+        'FI' => array( 'finn-fr', 'knight-nl', 'maxcdn', 'cloudflare'),
+        'FR' => array( 'finn-fr', 'knight-nl', 'maxcdn', 'cloudflare' ),
+        'MA' => array( 'finn-fr', 'knight-nl', 'leap-pt', 'alpine-ch', 'prome-it', 'maxcdn', 'cloudflare' ),
     );
 
     // The thresholds (%) below which we consider a CDN unavailable
