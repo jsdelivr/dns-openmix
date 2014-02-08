@@ -8,7 +8,7 @@ class OpenmixApplication implements Lifecycle
 {
     // Map provider aliases to cnames
     public $cnames = array(
-        'cloudflare' => 'cf.jsdelivr.net',
+        'cloudflare' => 'cdn.jsdelivr.net.cdn.cloudflare.net',
         'maxcdn' => 'jsdelivr3.dak.netdna-cdn.com',
         'leap-pt' => 'leap-pt.jsdelivr.net',
         'leap-ua' => 'leap-ua.jsdelivr.net',
