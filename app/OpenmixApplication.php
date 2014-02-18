@@ -14,8 +14,6 @@ class OpenmixApplication implements Lifecycle
         'leap-ua' => 'leap-ua.jsdelivr.net',
         'prome-it' => 'prome-it.jsdelivr.net',
         'exvm-sg' => 'exvm-sg.jsdelivr.net',
-        'knight-nl' => 'knight-nl.jsdelivr.net',
-        'alpine-ch' => 'alpine-ch.jsdelivr.net',
         'jetdi-id' => 'jetdi-id.jsdelivr.net',
         'finn-fr' => 'finn-fr.jsdelivr.net',
     );
@@ -57,9 +55,7 @@ class OpenmixApplication implements Lifecycle
     // so these overrides should generally be used to create supersets that include
     // the default providers
     public $country_overrides = array(
-        'CH' => array( 'alpine-ch', 'maxcdn', 'cloudflare'),
         'CN' => array( 'exvm-sg', 'jetdi-id', 'cloudflare'),
-        'NL' => array( 'knight-nl', 'maxcdn', 'cloudflare'),
         'HK' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
         'ID' => array( 'jetdi-id', 'exvm-sg', 'cloudflare' ),
         'IT' => array( 'prome-it', 'maxcdn', 'cloudflare' ),
@@ -69,20 +65,14 @@ class OpenmixApplication implements Lifecycle
         'SG' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
         'TH' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
         'JP' => array( 'exvm-sg', 'jetdi-id', 'cloudflare', 'maxcdn' ),
-        'UA' => array( 'knight-nl', 'leap-ua', 'maxcdn', 'cloudflare' ),
-        'RU' => array( 'knight-nl', 'leap-ua', 'maxcdn',, 'cloudflare' ),
-        'GR' => array( 'knight-nl', 'finn-fr', 'maxcdn',, 'cloudflare' ),
+        'UA' => array( 'leap-ua', 'maxcdn', 'cloudflare' ),
+        'RU' => array( 'leap-ua', 'maxcdn',, 'cloudflare' ),
+        'GR' => array( 'finn-fr', 'maxcdn',, 'cloudflare' ),
         'VN' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
-        'RO' => array( 'knight-nl', 'maxcdn', 'cloudflare' ),
         'PT' => array( 'leap-pt', 'maxcdn', 'cloudflare' ),
-        'DE' => array( 'knight-nl', 'maxcdn', 'cloudflare' ),
-        'NO' => array( 'knight-nl', 'maxcdn', 'cloudflare' ),
-        'RS' => array( 'knight-nl', 'maxcdn', 'cloudflare' ),
-        'DK' => array( 'maxcdn' , 'cloudflare'),
-        'AT' => array( 'knight-nl', 'maxcdn', 'cloudflare' ),
-        'FI' => array( 'finn-fr', 'knight-nl', 'maxcdn', 'cloudflare'),
-        'FR' => array( 'finn-fr', 'knight-nl', 'maxcdn', 'cloudflare' ),
-        'MA' => array( 'finn-fr', 'knight-nl', 'leap-pt', 'alpine-ch', 'prome-it', 'maxcdn', 'cloudflare' ),
+        'FI' => array( 'finn-fr', 'maxcdn', 'cloudflare'),
+        'FR' => array( 'finn-fr', 'maxcdn', 'cloudflare' ),
+        'MA' => array( 'finn-fr', 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ),
     );
 
     // The thresholds (%) below which we consider a CDN unavailable
