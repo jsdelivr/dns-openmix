@@ -39,11 +39,12 @@ class OpenmixApplication implements Lifecycle
         '36114' => array( 'maxcdn' ), // Las Vegas 2
         '36351' => array( 'maxcdn' ), // San Jose + Washington
         '15003' => array( 'maxcdn' ), // Chicago
-        '8972' => array( 'maxcdn' ), // Strasbourg 
+        '8972' => array( 'cloudflare' ), // Strasbourg 
         '42473' => array( 'prome-it' ), // Milan 
-        '32489' => array( 'maxcdn' ), // Canada 
+        '32489' => array( 'cloudflare' ), // Canada 
         '25137' => array( 'leap-pt' ), // Portugal 
-        '16265' => array( 'maxcdn' ) // Amsterdam 
+        '16265' => array( 'maxcdn' ), // Amsterdam 
+        '30736' => array( 'cloudflare' ) // Denmark 
     );
 
     // country codes mapped to an array of one or more provider aliases
@@ -66,11 +67,8 @@ class OpenmixApplication implements Lifecycle
         'JP' => array( 'exvm-sg', 'jetdi-id', 'cloudflare', 'maxcdn' ),
         'UA' => array( 'leap-ua', 'maxcdn', 'cloudflare' ),
         'RU' => array( 'leap-ua', 'maxcdn', 'cloudflare' ),
-        'GR' => array( 'maxcdn', 'cloudflare' ),
         'VN' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
         'PT' => array( 'leap-pt', 'maxcdn', 'cloudflare' ),
-        'FI' => array( 'maxcdn', 'cloudflare'),
-        'FR' => array( 'maxcdn', 'cloudflare' ),
         'MA' => array( 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ),
     );
 
