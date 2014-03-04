@@ -15,6 +15,7 @@ class OpenmixApplication implements Lifecycle
         'prome-it' => 'prome-it.jsdelivr.net',
         'exvm-sg' => 'exvm-sg.jsdelivr.net',
         'jetdi-id' => 'jetdi-id.jsdelivr.net',
+        'pat-ru' => 'pat-ru.jsdelivr.net'
     );
 
     // If you add or subtract any public providers, update these!
@@ -65,8 +66,8 @@ class OpenmixApplication implements Lifecycle
         'SG' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
         'TH' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
         'JP' => array( 'exvm-sg', 'jetdi-id', 'cloudflare', 'maxcdn' ),
-        'UA' => array( 'leap-ua', 'maxcdn', 'cloudflare' ),
-        'RU' => array( 'leap-ua', 'maxcdn', 'cloudflare' ),
+        'UA' => array( 'leap-ua', 'maxcdn', 'cloudflare', 'pat-ru' ),
+        'RU' => array( 'leap-ua', 'maxcdn', 'cloudflare', 'pat-ru' ),
         'VN' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
         'PT' => array( 'leap-pt', 'maxcdn', 'cloudflare' ),
         'MA' => array( 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ),
