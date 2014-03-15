@@ -13,9 +13,7 @@ class OpenmixApplication implements Lifecycle
         'leap-pt' => 'leap-pt.jsdelivr.net',
         'leap-ua' => 'leap-ua.jsdelivr.net',
         'prome-it' => 'prome-it.jsdelivr.net',
-        'exvm-sg' => 'exvm-sg.jsdelivr.net',
-        'jetdi-id' => 'jetdi-id.jsdelivr.net',
-        'pat-ru' => 'pat-ru.jsdelivr.net'
+        'exvm-sg' => 'exvm-sg.jsdelivr.net'
     );
 
     // If you add or subtract any public providers, update these!
@@ -56,19 +54,19 @@ class OpenmixApplication implements Lifecycle
     // so these overrides should generally be used to create supersets that include
     // the default providers
     public $country_overrides = array(
-        'CN' => array( 'exvm-sg', 'jetdi-id', 'cloudflare'),
-        'HK' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
-        'ID' => array( 'jetdi-id', 'exvm-sg', 'cloudflare' ),
+        'CN' => array( 'exvm-sg', 'cloudflare'),
+        'HK' => array( 'exvm-sg', 'cloudflare' ),
+        'ID' => array( 'exvm-sg', 'cloudflare' ),
         'IT' => array( 'prome-it', 'maxcdn', 'cloudflare' ),
-        'IN' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
-        'KR' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
-        'MY' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
-        'SG' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
-        'TH' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
-        'JP' => array( 'exvm-sg', 'jetdi-id', 'cloudflare', 'maxcdn' ),
-        'UA' => array( 'leap-ua', 'maxcdn', 'cloudflare', 'pat-ru' ),
-        'RU' => array( 'leap-ua', 'maxcdn', 'cloudflare', 'pat-ru' ),
-        'VN' => array( 'exvm-sg', 'jetdi-id', 'cloudflare' ),
+        'IN' => array( 'exvm-sg', 'cloudflare' ),
+        'KR' => array( 'exvm-sg', 'cloudflare' ),
+        'MY' => array( 'exvm-sg', 'cloudflare' ),
+        'SG' => array( 'exvm-sg', 'cloudflare' ),
+        'TH' => array( 'exvm-sg', 'cloudflare' ),
+        'JP' => array( 'exvm-sg', 'cloudflare', 'maxcdn' ),
+        'UA' => array( 'leap-ua', 'maxcdn', 'cloudflare' ),
+        'RU' => array( 'leap-ua', 'maxcdn', 'cloudflare'),
+        'VN' => array( 'exvm-sg', 'cloudflare' ),
         'PT' => array( 'leap-pt', 'maxcdn', 'cloudflare' ),
         'MA' => array( 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ),
     );
