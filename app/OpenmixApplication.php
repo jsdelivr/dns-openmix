@@ -65,7 +65,7 @@ class OpenmixApplication implements Lifecycle
         'TH' => array( 'exvm-sg', 'cloudflare' ),
         'JP' => array( 'exvm-sg', 'cloudflare', 'maxcdn' ),
         'UA' => array( 'leap-ua', 'maxcdn', 'cloudflare' ),
-        'RU' => array( 'leap-ua', 'maxcdn', 'cloudflare'),
+        'RU' => array( 'leap-ua', 'maxcdn'),
         'VN' => array( 'exvm-sg', 'cloudflare' ),
         'PT' => array( 'leap-pt', 'maxcdn', 'cloudflare' ),
         'MA' => array( 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ),
