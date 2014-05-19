@@ -72,7 +72,7 @@ class OpenmixApplication implements Lifecycle
     );
 
     // The thresholds (%) below which we consider a CDN unavailable
-    public $normal_availability_threshold = 90;
+    public $normal_availability_threshold = 92;
     public $pingdom_availability_threshold = 50;
     public $sonar_threshold = 95;
     public $min_valid_rtt = 5;
