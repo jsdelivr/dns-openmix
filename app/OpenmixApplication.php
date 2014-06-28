@@ -40,8 +40,10 @@ class OpenmixApplication implements Lifecycle
         '15003' => array( 'maxcdn' ), // Chicago
         '8972' => array( 'maxcdn' ), // Strasbourg 
         '42473' => array( 'prome-it' ), // Milan 
-        '32489' => array( 'maxcdn' ), // Canada 
-        '25137' => array( 'leap-pt' ), // Portugal 
+        '32489' => array( 'cloudflare' ), // Canada 
+        '32613' => array( 'cloudflare' ), // Canada 
+        '25137' => array( 'leap-pt' ), // Portugal
+        '58206' => array( 'leap-pt' ), // Portugal
         '16265' => array( 'maxcdn' ), // Amsterdam 
         '30736' => array( 'maxcdn' ) // Denmark 
     );
