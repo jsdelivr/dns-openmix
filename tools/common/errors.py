@@ -1,3 +1,0 @@
-
-class InputFileProblem(Exception):
-    pass
