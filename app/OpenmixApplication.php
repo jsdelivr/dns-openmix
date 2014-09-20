@@ -38,14 +38,14 @@ class OpenmixApplication implements Lifecycle
         '36114' => array( 'maxcdn' ), // Las Vegas 2
         '36351' => array( 'maxcdn' ), // San Jose + Washington
         '15003' => array( 'maxcdn' ), // Chicago
-        '8972' => array( 'maxcdn' ), // Strasbourg 
+        '8972' => array( 'maxcdn' ), // Strasbourg
         '42473' => array( 'prome-it' ), // Milan 
-        '32489' => array( 'cloudflare' ), // Canada 
-        '32613' => array( 'cloudflare' ), // Canada 
+        '32489' => array( 'cloudflare' ), // Canada
+        '32613' => array( 'cloudflare' ), // Canada
         '25137' => array( 'leap-pt' ), // Portugal
         '58206' => array( 'leap-pt' ), // Portugal
-        '16265' => array( 'maxcdn' ), // Amsterdam 
-        '30736' => array( 'maxcdn' ) // Denmark 
+        '16265' => array( 'maxcdn' ), // Amsterdam
+        '30736' => array( 'maxcdn' ) // Denmark
     );
 
     // country codes mapped to an array of one or more provider aliases
@@ -79,7 +79,7 @@ class OpenmixApplication implements Lifecycle
     public $sonar_threshold = 95;
     public $min_valid_rtt = 5;
     public $ttl = 20;
-    
+
     public $reasons = array(
         'A', // RTT
         //'B', // reserved
@@ -88,7 +88,7 @@ class OpenmixApplication implements Lifecycle
         'E', // None available
         'F', // No RTT data for available candidates
     );
-    
+
     /**
      * @param Configuration $config
      **/
@@ -113,7 +113,7 @@ class OpenmixApplication implements Lifecycle
         $config->declareInput(EDNSProperties::COUNTRY);
         $config->declareInput(EDNSProperties::ASN);
     }
-    
+
     /**
      * @param Request $request
      * @param Response $response
@@ -126,7 +126,7 @@ class OpenmixApplication implements Lifecycle
         $country = $request->geo($edns_enabled ? EDNSProperties::COUNTRY : GeoProperties::COUNTRY);
         //print("\nASN: $asn");
         //print("\nCountry: $country");
-        
+
         $avail = $request->radar(RadarProbeTypes::AVAILABILITY);
         $sonar = $request->pulse(PulseProperties::SONAR);
         //print("\nAvail:" . print_r($avail, true));
@@ -155,14 +155,14 @@ class OpenmixApplication implements Lifecycle
                     $good = false;
                 }
             }
-            
+
             if ($good && array_key_exists($alias, $sonar)) {
                 $value = $sonar[$alias];
                 if ($value < $this->sonar_threshold) {
                     $good = false;
                 }
             }
-            
+
             if ($good) {
                 array_push($candidates, $alias);
             }
@@ -181,7 +181,7 @@ class OpenmixApplication implements Lifecycle
             $response->setReasonCode('E');
             return;
         }
-        
+
         // We should get to this point most of the time
         $rtt = $request->radar(RadarProbeTypes::HTTP_RTT);
         //print("\nRTT:" . print_r($rtt, true));
