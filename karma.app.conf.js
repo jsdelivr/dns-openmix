@@ -15,10 +15,10 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-        'tests/resources/sinon-1.10.3.js',
-        'tests/resources/sinon-qunit-1.0.0.js',
+        'test/resources/sinon-1.10.3.js',
+        'test/resources/sinon-qunit-1.0.0.js',
         'app.js',
-        'tests/tests.js'
+        'test/tests.js'
     ],
 
     // list of files to exclude

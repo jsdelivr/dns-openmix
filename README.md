@@ -16,7 +16,7 @@ Application features:
 
 The validate-js.sh script looks for possible errors in the application and test
 code.  You must have Java installed for it to run.  It executes both the Google
-Closure compiler and JSLint (jslint4java).
+Closure compiler and JSHint.
 
 Here's an example where Google Closure compiler detects a misspelled property
 name, and JSLint detects that we forgot to comment-out a console print
@@ -32,9 +32,16 @@ statement.  We'd want to fix these issues before uploading the Openmix app.
 
     0 error(s), 1 warning(s), 65.1% typed
 
-    Validating with JSLint
+    Validating with JSHint
 
-    jslint:app.js:17:13:'console' was used before it was defined.
+    app.js: line 50, col 14, 'filter_object' is defined but never used.
+    app.js: line 69, col 14, 'filter_empty' is defined but never used.
+    app.js: line 80, col 14, 'get_lowest' is defined but never used.
+    app.js: line 42, col 45, 'response' is defined but never used.
+    app.js: line 42, col 36, 'request' is defined but never used.
+    app.js: line 70, col 18, 'key' is defined but never used.
+
+    6 errors
 
 ## Running Unit Tests
 
@@ -93,11 +100,12 @@ sometimes miss:
 
     $ sudo apt-get install nodejs nodejs-legacy
 
-### Installing Karma and other dependencies
+### Installing JSHint and Karma
 
 With Node.js installed you can use *npm*, the package manager for Node.js, to
-install Karma Runner and other dependencies.  The project directory contains a
-package.json file, which npm uses to download and install software locally.
+install JSHint, Karma Runner and other dependencies.  The project directory
+contains a package.json file, which npm uses to download and install software
+locally.
 
 From the directory containing package.json:
 
