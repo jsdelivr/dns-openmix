@@ -1,13 +1,3 @@
-/*global
-    module,
-    test,
-    equal,
-    deepEqual,
-    OpenmixApplication,
-    init,
-    onRequest,
-    console,
-*/
 
 (function() {
     'use strict';

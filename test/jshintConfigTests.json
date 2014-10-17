@@ -1,0 +1,14 @@
+{
+    "undef": true,
+    "unused": true,
+    "predef": [
+        "module",
+        "OpenmixApplication",
+        "test",
+        "console",
+        "equal",
+        "deepEqual",
+        "strictEqual",
+        "ok"
+    ]
+}

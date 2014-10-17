@@ -3,10 +3,7 @@
         "karma": "0.10.x",
         "karma-qunit": "0.1.x",
         "karma-phantomjs-launcher": "0.1.x",
-        "karma-junit-reporter": "0.2.x"
-    },
-    "repository" : {
-        "type" : "git",
-        "url" : "https://github.com/cedexis/radar.cedexis.com.git"
+        "karma-junit-reporter": "0.2.x",
+        "jshint": "2.5.x"
     }
 }
