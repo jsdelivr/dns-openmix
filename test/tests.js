@@ -2,67 +2,73 @@
 (function() {
     'use strict';
 
-    var default_settings = {
-        providers: [
-            { alias: 'foo', cname: 'www.foo.com' },
-            { alias: 'bar', cname: 'www.bar.com' },
-            { alias: 'baz', cname: 'www.baz.com' },
-            { alias: 'qux', cname: 'www.qux.com' }
-        ],
-        country_mapping: {
+    var defaultSettings = {
+        providers: {
+            'foo': 'www.foo.com',
+            'bar': 'www.bar.com',
+            'baz': 'www.baz.com',
+            'qux': 'www.qux.com'
+        },
+        countryMapping: {
             'CN': [ 'foo', 'bar' ],
             'US': [ 'baz', 'qux' ]
         },
-        asn_mapping: {
+        asnMapping: {
             '123': [ 'bar', 'qux' ],
             '234': [ 'bar', 'baz' ]
         },
-        default_providers: [ 'foo', 'bar' ],
-        last_resort_provider: 'foo',
-        default_ttl: 20,
-        normal_availability_threshold: 92,
-        pingdom_availability_threshold: 50,
-        sonar_threshold: 95,
-        min_valid_rtt: 5
+        defaultProviders: [ 'foo', 'bar' ],
+        lastResortProvider: 'foo',
+        defaultTtl: 20,
+        availabilityThresholds: {
+            normal: 92,
+            pingdom: 50
+        },
+        sonarThreshold: 0.95,
+        minValidRtt: 5
     };
 
-    module('do_init');
+    module('doInit');
 
-    function test_do_init(i) {
+    function testDoInit(i) {
         return function() {
 
             var sut,
                 config = {
                     requireProvider: this.stub()
                 },
-                test_stuff = {
+                testStuff = {
                     config: config
                 };
 
-            i.setup(test_stuff);
+            i.setup(testStuff);
 
-            sut = new OpenmixApplication(i.settings || default_settings);
+            sut = new OpenmixApplication(i.settings || defaultSettings);
 
             // Test
-            sut.do_init(config);
+            sut.doInit(config);
 
             // Assert
-            i.verify(test_stuff);
+            i.verify(testStuff);
         };
     }
 
-    test('change me', test_do_init({
+    test('default', testDoInit({
         setup: function() {
             return;
         },
         verify: function(i) {
-            equal(i.config.requireProvider.callCount, 4);
+            equal(i.config.requireProvider.callCount, 4, 'Check requireProvider call count');
+            equal(i.config.requireProvider.args[3][0], 'foo', 'Check provider alias');
+            equal(i.config.requireProvider.args[2][0], 'bar', 'Check provider alias');
+            equal(i.config.requireProvider.args[1][0], 'baz', 'Check provider alias');
+            equal(i.config.requireProvider.args[0][0], 'qux', 'Check provider alias');
         }
     }));
 
-    module('handle_request');
+    module('handleRequest');
 
-    function test_handle_request(i) {
+    function testHandleRequest(i) {
         return function() {
             var sut,
                 request = {
@@ -74,28 +80,28 @@
                     setTTL: this.stub(),
                     setReasonCode: this.stub()
                 },
-                test_stuff = {
+                testStuff = {
                     request: request,
                     response: response
                 };
 
-            i.setup(test_stuff);
+            i.setup(testStuff);
 
-            sut = new OpenmixApplication(i.settings || default_settings);
+            sut = new OpenmixApplication(i.settings || defaultSettings);
 
             // Test
-            sut.handle_request(request, response);
+            sut.handleRequest(request, response);
 
             // Assert
-            i.verify(test_stuff);
+            i.verify(testStuff);
         };
     }
 
-    test('use default providers', test_handle_request({
+    test('use default providers; baz unavailable; bar RTT suspiciously low', testHandleRequest({
         avail: {
             foo: { avail: 100 },
             bar: { avail: 100 },
-            baz: { avail: 100 },
+            baz: { avail: 91 },
             qux: { avail: 100 }
         },
         sonar: {
@@ -105,19 +111,17 @@
             qux: '1.000000'
         },
         rtt: {
-            foo: { http_rtt: 200 },
-            bar: { http_rtt: 201 },
-            baz: { http_rtt: 200 },
-            qux: { http_rtt: 201 }
+            foo: { 'http_rtt': 200 },
+            bar: { 'http_rtt': 4 },
+            baz: { 'http_rtt': 200 },
+            qux: { 'http_rtt': 201 }
         },
         setup: function(i) {
-            console.log(i);
             i.request.getProbe.withArgs('avail').returns(this.avail);
             i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
             i.request.getData.returns(this.sonar);
         },
         verify: function(i) {
-            console.log(i);
             equal(i.response.respond.args[0][0], 'foo');
             equal(i.response.respond.args[0][1], 'www.foo.com');
             equal(i.response.setReasonCode.args[0][0], 'A');
@@ -125,7 +129,7 @@
         }
     }));
 
-    test('use ASN providers; qux fastest', test_handle_request({
+    test('use ASN providers; qux fastest of those', testHandleRequest({
         avail: {
             foo: { avail: 100 },
             bar: { avail: 100 },
@@ -139,64 +143,62 @@
             qux: '1.000000'
         },
         rtt: {
-            foo: { http_rtt: 200 },
-            bar: { http_rtt: 201 },
-            baz: { http_rtt: 200 },
-            qux: { http_rtt: 200 }
+            foo: { 'http_rtt': 100 },
+            bar: { 'http_rtt': 201 },
+            baz: { 'http_rtt': 200 },
+            qux: { 'http_rtt': 200 }
         },
         setup: function(i) {
-            console.log(i);
             i.request.asn = 123;
             i.request.getProbe.withArgs('avail').returns(this.avail);
             i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
             i.request.getData.returns(this.sonar);
         },
         verify: function(i) {
-            console.log(i);
             equal(i.response.respond.args[0][0], 'qux');
             equal(i.response.respond.args[0][1], 'www.qux.com');
+            equal(i.response.setTTL.args[0][0], 20);
         }
     }));
 
-    test('1 available candidate based on Radar', test_handle_request({
+    test('use country providers; baz fastest of those', testHandleRequest({
         avail: {
-            foo: { avail: 91.999999 },
+            foo: { avail: 100 },
             bar: { avail: 100 },
             baz: { avail: 100 },
             qux: { avail: 100 }
         },
         sonar: {
-            foo: '1.000000',
+            foo: '0.999999',
             bar: '1.000000',
             baz: '1.000000',
             qux: '1.000000'
         },
         rtt: {
-            foo: { http_rtt: 200 },
-            bar: { http_rtt: 201 },
-            baz: { http_rtt: 200 },
-            qux: { http_rtt: 200 }
+            foo: { 'http_rtt': 100 },
+            bar: { 'http_rtt': 201 },
+            baz: { 'http_rtt': 199 },
+            qux: { 'http_rtt': 200 }
         },
         setup: function(i) {
-            console.log(i);
+            i.request.country = 'US';
             i.request.getProbe.withArgs('avail').returns(this.avail);
             i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
             i.request.getData.returns(this.sonar);
         },
         verify: function(i) {
-            console.log(i);
-            equal(i.response.respond.args[0][0], 'bar');
-            equal(i.response.respond.args[0][1], 'www.bar.com');
-            equal(i.response.setReasonCode.args[0][0], 'D');
+            equal(i.response.respond.args[0][0], 'baz');
+            equal(i.response.respond.args[0][1], 'www.baz.com');
+            equal(i.response.setTTL.args[0][0], 20);
         }
     }));
 
-    test('0 available candidates based on Radar', test_handle_request({
+    test('on bar available', testHandleRequest({
         avail: {
-            foo: { avail: 91.999999 },
-            bar: { avail: 91.999999 },
-            baz: { avail: 100 },
-            qux: { avail: 100 }
+            foo: { avail: 91 },
+            bar: { avail: 100 },
+            baz: { avail: 91 },
+            qux: { avail: 91 }
         },
         sonar: {
             foo: '1.000000',
@@ -205,26 +207,57 @@
             qux: '1.000000'
         },
         rtt: {
-            foo: { http_rtt: 200 },
-            bar: { http_rtt: 201 },
-            baz: { http_rtt: 200 },
-            qux: { http_rtt: 200 }
+            foo: { 'http_rtt': 200 },
+            bar: { 'http_rtt': 201 },
+            baz: { 'http_rtt': 200 },
+            qux: { 'http_rtt': 200 }
         },
         setup: function(i) {
-            console.log(i);
             i.request.getProbe.withArgs('avail').returns(this.avail);
             i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
             i.request.getData.returns(this.sonar);
         },
         verify: function(i) {
-            console.log(i);
-            equal(i.response.respond.args[0][0], 'foo');
-            equal(i.response.respond.args[0][1], 'www.foo.com');
-            equal(i.response.setReasonCode.args[0][0], 'E');
+            equal(i.response.respond.args[0][0], 'bar');
+            equal(i.response.respond.args[0][1], 'www.bar.com');
+            equal(i.response.setReasonCode.args[0][0], 'D');
+            equal(i.response.setTTL.args[0][0], 20);
         }
     }));
 
-    test('no RTT data for available candidates', test_handle_request({
+    test('no available candidates', testHandleRequest({
+        avail: {
+            foo: { avail: 91 },
+            bar: { avail: 91 },
+            baz: { avail: 91 },
+            qux: { avail: 91 }
+        },
+        sonar: {
+            foo: '1.000000',
+            bar: '1.000000',
+            baz: '1.000000',
+            qux: '1.000000'
+        },
+        rtt: {
+            foo: { 'http_rtt': 200 },
+            bar: { 'http_rtt': 201 },
+            baz: { 'http_rtt': 200 },
+            qux: { 'http_rtt': 200 }
+        },
+        setup: function(i) {
+            i.request.getProbe.withArgs('avail').returns(this.avail);
+            i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
+            i.request.getData.returns(this.sonar);
+        },
+        verify: function(i) {
+            equal(i.response.respond.args[0][0], 'foo');
+            equal(i.response.respond.args[0][1], 'www.foo.com');
+            equal(i.response.setReasonCode.args[0][0], 'E');
+            equal(i.response.setTTL.args[0][0], 20);
+        }
+    }));
+
+    test('RTT data for only 1 available candidate', testHandleRequest({
         avail: {
             foo: { avail: 100 },
             bar: { avail: 100 },
@@ -238,22 +271,85 @@
             qux: '1.000000'
         },
         rtt: {
-            foo: { http_rtt: 4 },
+            foo: { 'http_rtt': 4 },
             bar: {},
             baz: {},
             qux: {}
         },
         setup: function(i) {
-            console.log(i);
             i.request.getProbe.withArgs('avail').returns(this.avail);
             i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
             i.request.getData.returns(this.sonar);
         },
         verify: function(i) {
-            console.log(i);
+            equal(i.response.respond.args[0][0], 'foo');
+            equal(i.response.respond.args[0][1], 'www.foo.com');
+            equal(i.response.setReasonCode.args[0][0], 'D');
+            equal(i.response.setTTL.args[0][0], 20);
+        }
+    }));
+
+    test('RTT data for no available candidates', testHandleRequest({
+        avail: {
+            foo: { avail: 91 },
+            bar: { avail: 100 },
+            baz: { avail: 100 },
+            qux: { avail: 100 }
+        },
+        sonar: {
+            foo: '1.000000',
+            bar: '1.000000',
+            baz: '1.000000',
+            qux: '1.000000'
+        },
+        rtt: {
+            foo: { 'http_rtt': 4 },
+            bar: {},
+            baz: {},
+            qux: {}
+        },
+        setup: function(i) {
+            i.request.getProbe.withArgs('avail').returns(this.avail);
+            i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
+            i.request.getData.returns(this.sonar);
+        },
+        verify: function(i) {
+            equal(i.response.respond.args[0][0], 'foo');
+            equal(i.response.respond.args[0][1], 'www.foo.com');
+            equal(i.response.setReasonCode.args[0][0], 'E');
+            equal(i.response.setTTL.args[0][0], 20);
+        }
+    }));
+
+    test('only invalid RTT data for available candidates', testHandleRequest({
+        avail: {
+            foo: { avail: 100 },
+            bar: { avail: 100 },
+            baz: { avail: 100 },
+            qux: { avail: 100 }
+        },
+        sonar: {
+            foo: '1.000000',
+            bar: '1.000000',
+            baz: '1.000000',
+            qux: '1.000000'
+        },
+        rtt: {
+            foo: { 'http_rtt': 4 },
+            bar: { 'http_rtt': 4 },
+            baz: { 'http_rtt': 4 },
+            qux: { 'http_rtt': 4 }
+        },
+        setup: function(i) {
+            i.request.getProbe.withArgs('avail').returns(this.avail);
+            i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
+            i.request.getData.returns(this.sonar);
+        },
+        verify: function(i) {
             equal(i.response.respond.args[0][0], 'foo');
             equal(i.response.respond.args[0][1], 'www.foo.com');
             equal(i.response.setReasonCode.args[0][0], 'F');
+            equal(i.response.setTTL.args[0][0], 20);
         }
     }));
 

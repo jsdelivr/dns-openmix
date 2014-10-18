@@ -1,191 +1,14 @@
 
-var handler;
-
-/** @constructor */
-function OpenmixApplication(settings) {
-    'use strict';
-
-    /** @param {OpenmixConfiguration} config */
-    this.do_init = function(config) {
-        var i;
-        if (settings.providers) {
-            for (i = 0; i < settings.providers.length; i += 1) {
-                config.requireProvider(settings.providers[i].alias);
-            }
-        }
-    };
-
-    /**
-     * @param {OpenmixRequest} request
-     * @param {OpenmixResponse} response
-     */
-    this.handle_request = function(request, response) {
-
-        var reasons,
-            data,
-            subpopulation,
-            candidates,
-            availability_threshold = settings.normal_availability_threshold,
-            rtt_filtered,
-            provider,
-            reason_code;
-
-        function flatten(obj, property) {
-            var result = {}, i;
-            for (i in obj) {
-                if (obj.hasOwnProperty(i)) {
-                    if (obj[i].hasOwnProperty(property) && obj[i][property]) {
-                        result[i] = obj[i][property];
-                    }
-                }
-            }
-            return result;
-        }
-
-        function provider_from_alias(alias) {
-            var i;
-            for (i = 0; i < settings.providers.length; i += 1) {
-                if (alias === settings.providers[i].alias) {
-                    return settings.providers[i];
-                }
-            }
-            return null;
-        }
-
-        function to_numeric_sonar_data(obj) {
-            var i, result = {}, temp;
-            for (i in obj) {
-                if (obj.hasOwnProperty(i)) {
-                    temp = parseFloat(obj[i]);
-                    //console.log(temp);
-                    if (!isNaN(temp)) {
-                        result[i] = 100 * temp;
-                    }
-                }
-            }
-            return result;
-        }
-
-        function filter_rtt(obj) {
-            var i, result = {};
-            for (i in obj) {
-                if (obj.hasOwnProperty(i)) {
-                    //console.log('current alias: ' + i);
-                    if (-1 < candidates.indexOf(i)) {
-                        if (obj[i] >= settings.min_valid_rtt) {
-                            result[i] = obj[i];
-                        }
-                    }
-                }
-            }
-            return result;
-        }
-
-        function as_tuples(obj) {
-            var i, result = [];
-            for (i in obj) {
-                if (obj.hasOwnProperty(i)) {
-                    result.push([i, obj[i]]);
-                }
-            }
-            return result;
-        }
-
-        // Application logic here
-        reasons = {
-            rtt: 'A',
-            single_available_candidate: 'D',
-            none_available: 'E',
-            missing_rtt_for_available_candidates: 'F'
-        };
-
-        data = {
-            avail: flatten(request.getProbe('avail'), 'avail'),
-            rtt: flatten(request.getProbe('http_rtt'), 'http_rtt'),
-            sonar: to_numeric_sonar_data(request.getData('sonar'))
-        };
-        //console.log('avail: ' + JSON.stringify(data.avail));
-        //console.log('sonar: ' + JSON.stringify(data.sonar));
-        //console.log('rtt: ' + JSON.stringify(data.rtt));
-
-        subpopulation = settings.country_mapping[request.country] || settings.default_providers;
-        if (request.asn) {
-            if (settings.asn_mapping[request.asn.toString()]) {
-                subpopulation = settings.asn_mapping[request.asn.toString()];
-                availability_threshold = settings.pingdom_availability_threshold;
-            }
-        }
-        //console.log('subpop: ' + JSON.stringify(subpopulation));
-
-        candidates = subpopulation.reduce(
-            function(current, alias) {
-                // Check Radar availability
-                if (undefined !== data.avail[alias]) {
-                    if (data.avail[alias] < availability_threshold) {
-                        return current;
-                    }
-                }
-
-                // Check Sonar availability
-                if (undefined !== data.sonar[alias]) {
-                    if (data.sonar[alias] < settings.sonar_threshold) {
-                        return current;
-                    }
-                }
-
-                current.push(alias);
-                return current;
-            },
-            []
-        );
-        //console.log('candidates: ' + JSON.stringify(candidates));
-
-        if (1 === candidates.length) {
-            provider = provider_from_alias(candidates[0]);
-            reason_code = reasons.single_available_candidate;
-        } else if (0 === candidates.length) {
-            provider = provider_from_alias(settings.last_resort_provider);
-            reason_code = reasons.none_available;
-        } else {
-            rtt_filtered = as_tuples(filter_rtt(data.rtt))
-                .sort(
-                    function(left, right) {
-                        if (left[1] < right[1]) {
-                            return -1;
-                        }
-                        if (left[1] > right[1]) {
-                            return 1;
-                        }
-                        return 0;
-                    }
-                );
-            //console.log('rtt (filtered; as tuples; sorted): ' + JSON.stringify(rtt_filtered));
-            if (1 > rtt_filtered.length) {
-                provider = provider_from_alias(settings.last_resort_provider);
-                reason_code = reasons.missing_rtt_for_available_candidates;
-            } else {
-                provider = provider_from_alias(rtt_filtered[0][0]);
-                reason_code = reasons.rtt;
-            }
-        }
-
-        response.respond(provider.alias, provider.cname);
-        response.setReasonCode(reason_code);
-        response.setTTL(settings.default_ttl);
-    };
-
-}
-
-handler = new OpenmixApplication({
-    providers: [
-        { alias: 'cloudflare', cname: 'cdn.jsdelivr.net.cdn.cloudflare.net' },
-        { alias: 'maxcdn', cname: 'jsdelivr3.dak.netdna-cdn.com' },
-        { alias: 'leap-pt', cname: 'leap-pt.jsdelivr.net' },
-        { alias: 'leap-ua', cname: 'leap-ua.jsdelivr.net' },
-        { alias: 'prome-it', cname: 'prome-it.jsdelivr.net' },
-        { alias: 'exvm-sg', cname: 'exvm-sg.jsdelivr.net' }
-    ],
-    country_mapping: {
+var handler = new OpenmixApplication({
+    providers: {
+        'cloudflare': 'cdn.jsdelivr.net.cdn.cloudflare.net',
+        'maxcdn': 'jsdelivr3.dak.netdna-cdn.com',
+        'leap-pt': 'leap-pt.jsdelivr.net',
+        'leap-ua': 'leap-ua.jsdelivr.net',
+        'prome-it': 'prome-it.jsdelivr.net',
+        'exvm-sg': 'exvm-sg.jsdelivr.net'
+    },
+    countryMapping: {
         'CN': [ 'exvm-sg', 'cloudflare' ],
         'HK': [ 'exvm-sg', 'cloudflare' ],
         'ID': [ 'exvm-sg', 'cloudflare' ],
@@ -202,7 +25,7 @@ handler = new OpenmixApplication({
         'PT': [ 'leap-pt', 'maxcdn', 'cloudflare' ],
         'MA': [ 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ]
     },
-    asn_mapping: {
+    asnMapping: {
         '36114': [ 'maxcdn' ], // Las Vegas 2
         '36351': [ 'maxcdn' ], // San Jose + Washington
         '15003': [ 'maxcdn' ], // Chicago
@@ -215,21 +38,200 @@ handler = new OpenmixApplication({
         '16265': [ 'maxcdn' ], // Amsterdam
         '30736': [ 'maxcdn' ] // Denmark
     },
-    default_providers: [ 'maxcdn', 'cloudflare' ],
-    last_resort_provider: 'maxcdn',
-    default_ttl: 20,
-    normal_availability_threshold: 92,
-    pingdom_availability_threshold: 50,
-    sonar_threshold: 95,
-    min_valid_rtt: 5
+    defaultProviders: [ 'maxcdn', 'cloudflare' ],
+    lastResortProvider: 'maxcdn',
+    defaultTtl: 20,
+    availabilityThresholds: {
+        normal: 92,
+        pingdom: 50
+    },
+    sonarThreshold: 0.95,
+    minValidRtt: 5
 });
 
 function init(config) {
     'use strict';
-    handler.do_init(config);
+    handler.doInit(config);
 }
 
 function onRequest(request, response) {
     'use strict';
-    handler.handle_request(request, response);
+    handler.handleRequest(request, response);
+}
+
+/**
+ * @constructor
+ * @param {{
+ *      providers:!Object.<string,string>
+ * }} settings
+ */
+function OpenmixApplication(settings) {
+    'use strict';
+
+    var aliases = Object.keys(settings.providers);
+
+    /** @param {OpenmixConfiguration} config */
+    this.doInit = function(config) {
+        var i = aliases.length;
+        while (i--) {
+            config.requireProvider(aliases[i]);
+        }
+    };
+
+    /**
+     * @param {OpenmixRequest} request
+     * @param {OpenmixResponse} response
+     */
+    this.handleRequest = function(request, response) {
+
+        var reasons,
+            candidates,
+            candidateAliases,
+            sonar,
+            subpopulation,
+            availabilityThreshold = settings.availabilityThresholds.normal,
+            decisionAlias,
+            decisionReasons = [],
+            decisionTtl;
+
+        /**
+         * @param {{avail:number}} candidate
+         * @param {string} alias
+         */
+        function filterCandidates(candidate, alias) {
+            return (-1 < subpopulation.indexOf(alias))
+                && (candidate.avail !== undefined)
+                && (candidate.avail >= availabilityThreshold)
+                && (sonar[alias] !== undefined)
+                && (parseFloat(sonar[alias]) >= settings.sonarThreshold);
+        }
+
+        /**
+         * @param {{http_rtt:number}} candidate
+         */
+        function filterInvalidRtt(candidate) {
+            /* jshint camelcase:false */
+            return candidate.http_rtt >= settings.minValidRtt;
+            /* jshint camelcase:true */
+        }
+
+        // Application logic here
+        reasons = {
+            rtt: 'A',
+            singleAvailableCandidate: 'D',
+            noneAvailableOrNoRtt: 'E',
+            missingRttForAvailableCandidates: 'F'
+        };
+
+        subpopulation = settings.countryMapping[request.country] || settings.defaultProviders;
+        if (request.asn in settings.asnMapping) {
+            subpopulation = settings.asnMapping[request.asn];
+            availabilityThreshold = settings.availabilityThresholds.pingdom;
+        }
+        //console.log('subpop: ' + JSON.stringify(subpopulation));
+
+        sonar = request.getData('sonar');
+        candidates = filterObject(request.getProbe('avail'), filterCandidates);
+        //console.log('candidates: ' + JSON.stringify(candidates));
+        candidates = joinObjects(candidates, request.getProbe('http_rtt'), 'http_rtt');
+        //console.log('candidates (with rtt): ' + JSON.stringify(candidates));
+        candidateAliases = Object.keys(candidates);
+
+        if (1 === candidateAliases.length) {
+            decisionAlias = candidateAliases[0];
+            decisionReasons.push(reasons.singleAvailableCandidate);
+            decisionTtl = decisionTtl || settings.defaultTtl;
+        } else if (0 === candidateAliases.length) {
+            decisionAlias = settings.lastResortProvider;
+            decisionReasons.push(reasons.noneAvailableOrNoRtt);
+            decisionTtl = decisionTtl || settings.defaultTtl;
+        } else {
+            candidates = filterObject(candidates, filterInvalidRtt);
+            //console.log('candidates (rtt filtered): ' + JSON.stringify(candidates));
+            candidateAliases = Object.keys(candidates);
+
+            if (!candidateAliases.length) {
+                decisionAlias = settings.lastResortProvider;
+                decisionReasons.push(reasons.missingRttForAvailableCandidates);
+                decisionTtl = decisionTtl || settings.defaultTtl;
+            } else {
+                decisionAlias = getLowest(candidates, 'http_rtt');
+                decisionReasons.push(reasons.rtt);
+                decisionTtl = decisionTtl || settings.defaultTtl;
+            }
+        }
+
+        response.respond(decisionAlias, settings.providers[decisionAlias]);
+        response.setReasonCode(decisionReasons.join(''));
+        response.setTTL(decisionTtl);
+    };
+
+    /**
+     * @param {!Object} object
+     * @param {Function} filter
+     */
+    function filterObject(object, filter) {
+        var keys = Object.keys(object),
+            i = keys.length,
+            key;
+
+        while (i --) {
+            key = keys[i];
+
+            if (!filter(object[key], key)) {
+                delete object[key];
+            }
+        }
+
+        return object;
+    }
+
+    /**
+     * @param {!Object} target
+     * @param {Object} source
+     * @param {string} property
+     */
+    function joinObjects(target, source, property) {
+        var keys = Object.keys(target),
+            i = keys.length,
+            key;
+
+        while (i --) {
+            key = keys[i];
+
+            if (typeof source[key] !== 'undefined' && typeof source[key][property] !== 'undefined') {
+                target[key][property] = source[key][property];
+            }
+            else {
+                delete target[key];
+            }
+        }
+
+        return target;
+    }
+
+    /**
+     * @param {!Object} source
+     * @param {string} property
+     */
+    function getLowest(source, property) {
+        var keys = Object.keys(source),
+            i = keys.length,
+            key,
+            candidate,
+            min = Infinity,
+            value;
+
+        while (i --) {
+            key = keys[i];
+            value = source[key][property];
+
+            if (value < min) {
+                candidate = key;
+                min = value;
+            }
+        }
+
+        return candidate;
+    }
 }
