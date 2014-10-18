@@ -68,7 +68,10 @@ function onRequest(request, response) {
 function OpenmixApplication(settings) {
     'use strict';
 
-    var aliases = Object.keys(settings.providers);
+    var aliases = Object.keys(settings.providers),
+        defaultProviders = arrayToMap(settings.defaultProviders),
+        countryMapping = copyToMaps(settings.countryMapping),
+        asnMapping = copyToMaps(settings.asnMapping);
 
     /** @param {OpenmixConfiguration} config */
     this.doInit = function(config) {
@@ -87,8 +90,8 @@ function OpenmixApplication(settings) {
         var reasons,
             candidates,
             candidateAliases,
-            sonar,
-            subpopulation,
+            sonar = request.getData('sonar'),
+            subpopulation = defaultProviders,
             availabilityThreshold = settings.availabilityThresholds.normal,
             decisionAlias,
             decisionReasons = [],
@@ -99,10 +102,10 @@ function OpenmixApplication(settings) {
          * @param {string} alias
          */
         function filterCandidates(candidate, alias) {
-            return (-1 < subpopulation.indexOf(alias))
-                && (candidate.avail !== undefined)
+            return (typeof subpopulation[alias] !== 'undefined')
+                && (typeof candidate.avail !== 'undefined')
                 && (candidate.avail >= availabilityThreshold)
-                && (sonar[alias] !== undefined)
+                && (typeof sonar[alias] !== 'undefined')
                 && (parseFloat(sonar[alias]) >= settings.sonarThreshold);
         }
 
@@ -123,14 +126,15 @@ function OpenmixApplication(settings) {
             missingRttForAvailableCandidates: 'F'
         };
 
-        subpopulation = settings.countryMapping[request.country] || settings.defaultProviders;
-        if (request.asn in settings.asnMapping) {
-            subpopulation = settings.asnMapping[request.asn];
+        if (typeof asnMapping[request.asn] !== 'undefined') {
+            subpopulation = asnMapping[request.asn];
             availabilityThreshold = settings.availabilityThresholds.pingdom;
+        }
+        else if (typeof countryMapping[request.country] !== 'undefined') {
+            subpopulation = countryMapping[request.country];
         }
         //console.log('subpop: ' + JSON.stringify(subpopulation));
 
-        sonar = request.getData('sonar');
         candidates = filterObject(request.getProbe('avail'), filterCandidates);
         //console.log('candidates: ' + JSON.stringify(candidates));
         candidates = joinObjects(candidates, request.getProbe('http_rtt'), 'http_rtt');
@@ -150,7 +154,7 @@ function OpenmixApplication(settings) {
             //console.log('candidates (rtt filtered): ' + JSON.stringify(candidates));
             candidateAliases = Object.keys(candidates);
 
-            if (!candidateAliases.length) {
+            if (0 === candidateAliases.length) {
                 decisionAlias = settings.lastResortProvider;
                 decisionReasons.push(reasons.missingRttForAvailableCandidates);
                 decisionTtl = decisionTtl || settings.defaultTtl;
@@ -233,5 +237,36 @@ function OpenmixApplication(settings) {
         }
 
         return candidate;
+    }
+
+    /**
+     * @param {!Object} object
+     */
+    function copyToMaps(object) {
+        var maps = {},
+            keys = Object.keys(object),
+            i = keys.length,
+            key;
+
+        while (i --) {
+            key = keys[i];
+            maps[key] = arrayToMap(object[key]);
+        }
+
+        return maps;
+    }
+
+    /**
+     * @param {Array} array
+     */
+    function arrayToMap(array) {
+        var object = {},
+            i = array.length;
+
+        while (i --) {
+            object[array[i]] = true;
+        }
+
+        return object;
     }
 }
