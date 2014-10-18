@@ -1,16 +1,14 @@
-# Openmix Application Template
+# jsDelivr Openmix DNS application
 
 ## Description
 
-This template can be used as a starting point for Openmix applications.
+This is the live code that jsDelivr uses to do load balancing.
 
-Application features:
+By default only MaxCDN and CloudFlare are considered for any requests. Set in array `defaultProviders`
 
-* TODO
+But by using the `countryMapping` array we set overrides and change the default providers that the system will consider for different countries.
 
-* TODO
-
-* TODO
+`asnMapping` sets ASN overides for monitoring tools because we collect Real User Metrics so the system does not work very well with synthetic tests originated from ISPs used by hosting providers
 
 ## Validating the Code
 
