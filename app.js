@@ -240,7 +240,7 @@ function OpenmixApplication(settings) {
     }
 
     /**
-     * @param {Object} object
+     * @param {!Object} object
      */
     function copyToMaps(object) {
         var maps = {},
