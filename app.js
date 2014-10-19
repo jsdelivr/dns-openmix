@@ -10,20 +10,21 @@ var handler = new OpenmixApplication({
     },
     countryMapping: {
         'CN': [ 'exvm-sg', 'cloudflare' ],
-        'HK': [ 'exvm-sg', 'cloudflare' ],
+        'HK': [ 'maxcdn', 'cloudflare' ],
         'ID': [ 'exvm-sg', 'cloudflare' ],
         'IT': [ 'prome-it', 'maxcdn', 'cloudflare' ],
         'IN': [ 'exvm-sg', 'cloudflare' ],
         'KR': [ 'exvm-sg', 'cloudflare' ],
         'MY': [ 'exvm-sg', 'cloudflare' ],
-        'SG': [ 'exvm-sg', 'cloudflare' ],
-        'TH': [ 'exvm-sg', 'cloudflare' ],
-        'JP': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
+        'SG': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
+        'TH': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
+        'JP': [ 'cloudflare', 'maxcdn' ],
         'UA': [ 'leap-ua', 'maxcdn', 'cloudflare' ],
         'RU': [ 'leap-ua', 'maxcdn' ],
         'VN': [ 'exvm-sg', 'cloudflare' ],
         'PT': [ 'leap-pt', 'maxcdn', 'cloudflare' ],
-        'MA': [ 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ]
+        'MA': [ 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ],
+        'EG': [ 'prome-it', 'cloudflare']
     },
     asnMapping: {
         '36114': [ 'maxcdn' ], // Las Vegas 2
