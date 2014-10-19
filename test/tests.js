@@ -353,4 +353,79 @@
         }
     }));
 
+    test('no data', testHandleRequest({
+        avail: {
+            foo: {},
+            bar: {},
+            baz: {},
+            qux: {}
+        },
+        sonar: {
+            foo: '1.000000',
+            bar: '1.000000',
+            baz: '1.000000',
+            qux: '1.000000'
+        },
+        rtt: {
+            foo: {},
+            bar: {},
+            baz: {},
+            qux: {}
+        },
+        setup: function(i) {
+            i.request.getProbe.withArgs('avail').returns(this.avail);
+            i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
+            i.request.getData.returns(this.sonar);
+        },
+        verify: function(i) {
+            equal(i.response.respond.args[0][0], 'foo');
+            equal(i.response.respond.args[0][1], 'www.foo.com');
+            equal(i.response.setReasonCode.args[0][0], 'E');
+        }
+    }));
+
+    test('no mappings', testHandleRequest({
+        settings: {
+            providers: {
+                'foo': 'www.foo.com',
+                'bar': 'www.bar.com',
+                'baz': 'www.baz.com',
+            },
+            defaultProviders: [ 'foo', 'bar' ],
+            lastResortProvider: 'foo',
+            defaultTtl: 20,
+            availabilityThresholds: {
+                normal: 92,
+                pingdom: 50
+            },
+            sonarThreshold: 0.95,
+            minValidRtt: 5
+        },
+        avail: {
+            foo: { avail: 100 },
+            bar: { avail: 100 },
+            baz: { avail: 100 }
+        },
+        sonar: {
+            foo: '1.000000',
+            bar: '1.000000',
+            baz: '1.000000'
+        },
+        rtt: {
+            foo: { 'http_rtt': 199 },
+            bar: { 'http_rtt': 200 },
+            baz: { 'http_rtt': 200 }
+        },
+        setup: function(i) {
+            i.request.getProbe.withArgs('avail').returns(this.avail);
+            i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
+            i.request.getData.returns(this.sonar);
+        },
+        verify: function(i) {
+            equal(i.response.respond.args[0][0], 'foo');
+            equal(i.response.respond.args[0][1], 'www.foo.com');
+            equal(i.response.setReasonCode.args[0][0], 'A');
+        }
+    }));
+
 }());

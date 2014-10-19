@@ -1,4 +1,3 @@
-
 var handler = new OpenmixApplication({
     providers: {
         'cloudflare': 'cdn.jsdelivr.net.cdn.cloudflare.net',
@@ -9,36 +8,9 @@ var handler = new OpenmixApplication({
         'exvm-sg': 'exvm-sg.jsdelivr.net'
     },
     countryMapping: {
-        'CN': [ 'exvm-sg', 'cloudflare' ],
-        'HK': [ 'maxcdn', 'cloudflare' ],
-        'ID': [ 'exvm-sg', 'cloudflare' ],
-        'IT': [ 'prome-it', 'maxcdn', 'cloudflare' ],
-        'IN': [ 'exvm-sg', 'cloudflare' ],
-        'KR': [ 'exvm-sg', 'cloudflare' ],
-        'MY': [ 'exvm-sg', 'cloudflare' ],
-        'SG': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'TH': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'JP': [ 'cloudflare', 'maxcdn' ],
-        'UA': [ 'leap-ua', 'maxcdn', 'cloudflare' ],
-        'RU': [ 'leap-ua', 'maxcdn' ],
-        'VN': [ 'exvm-sg', 'cloudflare' ],
-        'PT': [ 'leap-pt', 'maxcdn', 'cloudflare' ],
-        'MA': [ 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ],
-        'EG': [ 'prome-it', 'cloudflare']
+        'MA': [ 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ]
     },
-    asnMapping: {
-        '36114': [ 'maxcdn' ], // Las Vegas 2
-        '36351': [ 'maxcdn' ], // San Jose + Washington
-        '15003': [ 'maxcdn' ], // Chicago
-        '8972': [ 'maxcdn' ], // Strasbourg
-        '42473': [ 'prome-it' ], // Milan
-        '32489': [ 'cloudflare' ], // Canada
-        '32613': [ 'cloudflare' ], // Canada
-        '25137': [ 'leap-pt' ], // Portugal
-        '58206': [ 'leap-pt' ], // Portugal
-        '16265': [ 'maxcdn' ], // Amsterdam
-        '30736': [ 'maxcdn' ] // Denmark
-    },
+
     defaultProviders: [ 'maxcdn', 'cloudflare' ],
     lastResortProvider: 'maxcdn',
     defaultTtl: 20,
@@ -89,7 +61,7 @@ function OpenmixApplication(settings) {
             candidates,
             candidateAliases,
             sonar,
-            subpopulation,
+            subpopulation = settings.defaultProviders,
             availabilityThreshold = settings.availabilityThresholds.normal,
             decisionAlias,
             decisionReasons = [],
@@ -124,10 +96,17 @@ function OpenmixApplication(settings) {
             missingRttForAvailableCandidates: 'F'
         };
 
-        subpopulation = settings.countryMapping[request.country] || settings.defaultProviders;
-        if (request.asn in settings.asnMapping) {
-            subpopulation = settings.asnMapping[request.asn];
-            availabilityThreshold = settings.availabilityThresholds.pingdom;
+        if (settings.countryMapping) {
+            if (settings.countryMapping[request.country]) {
+                subpopulation = settings.countryMapping[request.country];
+            }
+        }
+
+        if (settings.asnMapping) {
+            if (request.asn in settings.asnMapping) {
+                subpopulation = settings.asnMapping[request.asn];
+                availabilityThreshold = settings.availabilityThresholds.pingdom;
+            }
         }
         //console.log('subpop: ' + JSON.stringify(subpopulation));
 
