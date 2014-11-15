@@ -5,7 +5,8 @@ var handler = new OpenmixApplication({
         'leap-pt': 'leap-pt.jsdelivr.net',
         'leap-ua': 'leap-ua.jsdelivr.net',
         'prome-it': 'prome-it.jsdelivr.net',
-        'exvm-sg': 'exvm-sg.jsdelivr.net'
+        'exvm-sg': 'exvm-sg.jsdelivr.net',
+        'tm-mg': 'tm-mg.jsdelivr.net'
     },
     countryMapping: {
         'CN': [ 'exvm-sg', 'cloudflare' ],
@@ -22,7 +23,8 @@ var handler = new OpenmixApplication({
         'RU': [ 'leap-ua', 'maxcdn' ],
         'VN': [ 'exvm-sg', 'cloudflare' ],
         'PT': [ 'leap-pt', 'maxcdn', 'cloudflare' ],
-        'MA': [ 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ]
+        'MA': [ 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ],
+        'MG': [ 'tm-mg', 'cloudflare']
     },
     asnMapping: {
         '36114': [ 'maxcdn' ], // Las Vegas 2
