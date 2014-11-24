@@ -2,8 +2,6 @@ var handler = new OpenmixApplication({
     providers: {
         'cloudflare': 'cdn.jsdelivr.net.cdn.cloudflare.net',
         'maxcdn': 'jsdelivr3.dak.netdna-cdn.com',
-        'leap-pt': 'leap-pt.jsdelivr.net',
-        'leap-ua': 'leap-ua.jsdelivr.net',
         'prome-it': 'prome-it.jsdelivr.net',
         'exvm-sg': 'exvm-sg.jsdelivr.net',
         'tm-mg': 'tm-mg.jsdelivr.net'
@@ -19,11 +17,8 @@ var handler = new OpenmixApplication({
         'SG': [ 'exvm-sg', 'cloudflare' ],
         'TH': [ 'exvm-sg', 'cloudflare' ],
         'JP': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'UA': [ 'leap-ua', 'maxcdn', 'cloudflare' ],
-        'RU': [ 'leap-ua', 'maxcdn' ],
         'VN': [ 'exvm-sg', 'cloudflare' ],
-        'PT': [ 'leap-pt', 'maxcdn', 'cloudflare' ],
-        'MA': [ 'leap-pt', 'prome-it', 'maxcdn', 'cloudflare' ],
+        'MA': [ 'prome-it', 'maxcdn', 'cloudflare' ],
         'MG': [ 'tm-mg', 'cloudflare']
     },
     asnMapping: {
@@ -34,8 +29,8 @@ var handler = new OpenmixApplication({
         '42473': [ 'prome-it' ], // Milan
         '32489': [ 'cloudflare' ], // Canada
         '32613': [ 'cloudflare' ], // Canada
-        '25137': [ 'leap-pt' ], // Portugal
-        '58206': [ 'leap-pt' ], // Portugal
+        '25137': [ 'cloudflare' ], // Portugal
+        '58206': [ 'cloudflare' ], // Portugal
         '16265': [ 'maxcdn' ], // Amsterdam
         '30736': [ 'maxcdn' ] // Denmark
     },
@@ -47,7 +42,7 @@ var handler = new OpenmixApplication({
         pingdom: 50
     },
     sonarThreshold: 0.95,
-    minValidRtt: 5
+    minValidRtt: 4
 });
 
 function init(config) {
