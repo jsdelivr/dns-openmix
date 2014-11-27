@@ -12,7 +12,7 @@ var handler = new OpenmixApplication({
         'ID': [ 'exvm-sg', 'cloudflare' ],
         'IT': [ 'prome-it', 'maxcdn', 'cloudflare' ],
         'IN': [ 'exvm-sg', 'cloudflare' ],
-        'KR': [ 'exvm-sg', 'cloudflare' ],
+        'KR': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
         'MY': [ 'exvm-sg', 'cloudflare' ],
         'SG': [ 'exvm-sg', 'cloudflare' ],
         'TH': [ 'exvm-sg', 'cloudflare' ],
