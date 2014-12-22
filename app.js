@@ -2,31 +2,27 @@ var handler = new OpenmixApplication({
     providers: {
         'cloudflare': 'cdn.jsdelivr.net.cdn.cloudflare.net',
         'maxcdn': 'jsdelivr3.dak.netdna-cdn.com',
-        'prome-it': 'prome-it.jsdelivr.net',
         'exvm-sg': 'exvm-sg.jsdelivr.net',
         'tm-mg': 'tm-mg.jsdelivr.net'
     },
     countryMapping: {
         'CN': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
         'HK': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'ID': [ 'exvm-sg', 'cloudflare' ],
-        'IT': [ 'prome-it', 'maxcdn', 'cloudflare' ],
-        'IN': [ 'exvm-sg', 'cloudflare' ],
+        'ID': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
+        'IN': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
         'KR': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'MY': [ 'exvm-sg', 'cloudflare' ],
+        'MY': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
         'SG': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
         'TH': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
         'JP': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'VN': [ 'exvm-sg', 'cloudflare' ],
-        'MA': [ 'prome-it', 'maxcdn', 'cloudflare' ],
-        'MG': [ 'tm-mg', 'cloudflare']
+        'VN': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
+        'MG': [ 'tm-mg', 'cloudflare', 'maxcdn']
     },
     asnMapping: {
         '36114': [ 'maxcdn' ], // Las Vegas 2
         '36351': [ 'maxcdn' ], // San Jose + Washington
         '15003': [ 'maxcdn' ], // Chicago
         '8972': [ 'maxcdn' ], // Strasbourg
-        '42473': [ 'prome-it' ], // Milan
         '32489': [ 'cloudflare' ], // Canada
         '32613': [ 'cloudflare' ], // Canada
         '25137': [ 'cloudflare' ], // Portugal
