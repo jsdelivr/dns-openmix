@@ -3,20 +3,21 @@ var handler = new OpenmixApplication({
         'cloudflare': 'cdn.jsdelivr.net.cdn.cloudflare.net',
         'maxcdn': 'jsdelivr3.dak.netdna-cdn.com',
         'exvm-sg': 'exvm-sg.jsdelivr.net',
-        'tm-mg': 'tm-mg.jsdelivr.net'
+        'tm-mg': 'tm-mg.jsdelivr.net',
+        'keycdn': 'jsdelivr-cb7.kxcdn.com'
     },
     countryMapping: {
-        'CN': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'HK': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'ID': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'IN': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'KR': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'MY': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'SG': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'TH': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'JP': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'VN': [ 'exvm-sg', 'cloudflare', 'maxcdn' ],
-        'MG': [ 'tm-mg', 'cloudflare', 'maxcdn']
+        'CN': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
+        'HK': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
+        'ID': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
+        'IN': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
+        'KR': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
+        'MY': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
+        'SG': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
+        'TH': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
+        'JP': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
+        'VN': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
+        'MG': [ 'tm-mg', 'cloudflare']
     },
     asnMapping: {
         '36114': [ 'maxcdn' ], // Las Vegas 2
@@ -30,7 +31,7 @@ var handler = new OpenmixApplication({
         '16265': [ 'maxcdn' ], // Amsterdam
         '30736': [ 'maxcdn' ] // Denmark
     },
-    defaultProviders: [ 'maxcdn', 'cloudflare' ],
+    defaultProviders: [ 'maxcdn', 'cloudflare', 'keycdn' ],
     lastResortProvider: 'maxcdn',
     defaultTtl: 20,
     availabilityThresholds: {
