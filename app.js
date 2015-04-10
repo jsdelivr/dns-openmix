@@ -11,7 +11,7 @@ var handler = new OpenmixApplication({
         'HK': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
         'ID': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
         'IN': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
-        'KR': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
+        'KR': [ 'cloudflare', 'maxcdn', 'keycdn' ],
         'MY': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
         'SG': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
         'TH': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
