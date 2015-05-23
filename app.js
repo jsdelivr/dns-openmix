@@ -2,21 +2,10 @@ var handler = new OpenmixApplication({
     providers: {
         'cloudflare': 'cdn.jsdelivr.net.cdn.cloudflare.net',
         'maxcdn': 'jsdelivr3.dak.netdna-cdn.com',
-        'exvm-sg': 'exvm-sg.jsdelivr.net',
         'tm-mg': 'tm-mg.jsdelivr.net',
         'keycdn': 'jsdelivr-cb7.kxcdn.com'
     },
     countryMapping: {
-        'CN': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
-        'HK': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
-        'ID': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
-        'IN': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
-        'KR': [ 'cloudflare', 'maxcdn', 'keycdn' ],
-        'MY': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
-        'SG': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
-        'TH': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
-        'JP': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
-        'VN': [ 'exvm-sg', 'cloudflare', 'maxcdn', 'keycdn' ],
         'MG': [ 'tm-mg', 'cloudflare']
     },
     asnMapping: {
