@@ -13,7 +13,7 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 echo
 echo -e "${cyan}Validating with Google Closure Compiler${red}"
 echo
-java -jar test/compiler.jar --js app.js --js test/openmix-externs.js --compilation_level ADVANCED --js_output_file /dev/null --warning_level VERBOSE --language_in ECMASCRIPT5
+java -jar test/compiler.jar --js app.js --externs test/openmix-externs.js --compilation_level ADVANCED --js_output_file /dev/null --warning_level VERBOSE --language_in ECMASCRIPT5
 echo -e "${no_color}"
 
 echo -e "${cyan}Validating with JSHint${red}"

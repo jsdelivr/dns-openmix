@@ -97,70 +97,6 @@
         };
     }
 
-    test('use default providers; baz unavailable; bar RTT suspiciously low', testHandleRequest({
-        avail: {
-            foo: { avail: 100 },
-            bar: { avail: 100 },
-            baz: { avail: 91 },
-            qux: { avail: 100 }
-        },
-        sonar: {
-            foo: '0.999999',
-            bar: '1.000000',
-            baz: '1.000000',
-            qux: '1.000000'
-        },
-        rtt: {
-            foo: { 'http_rtt': 200 },
-            bar: { 'http_rtt': 4 },
-            baz: { 'http_rtt': 200 },
-            qux: { 'http_rtt': 201 }
-        },
-        setup: function(i) {
-            i.request.getProbe.withArgs('avail').returns(this.avail);
-            i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
-            i.request.getData.returns(this.sonar);
-        },
-        verify: function(i) {
-            equal(i.response.respond.args[0][0], 'foo');
-            equal(i.response.respond.args[0][1], 'www.foo.com');
-            equal(i.response.setReasonCode.args[0][0], 'A');
-            equal(i.response.setTTL.args[0][0], 20);
-        }
-    }));
-
-    test('use ASN providers; qux fastest of those', testHandleRequest({
-        avail: {
-            foo: { avail: 100 },
-            bar: { avail: 100 },
-            baz: { avail: 100 },
-            qux: { avail: 100 }
-        },
-        sonar: {
-            foo: '0.999999',
-            bar: '1.000000',
-            baz: '1.000000',
-            qux: '1.000000'
-        },
-        rtt: {
-            foo: { 'http_rtt': 100 },
-            bar: { 'http_rtt': 201 },
-            baz: { 'http_rtt': 200 },
-            qux: { 'http_rtt': 200 }
-        },
-        setup: function(i) {
-            i.request.asn = 123;
-            i.request.getProbe.withArgs('avail').returns(this.avail);
-            i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
-            i.request.getData.returns(this.sonar);
-        },
-        verify: function(i) {
-            equal(i.response.respond.args[0][0], 'qux');
-            equal(i.response.respond.args[0][1], 'www.qux.com');
-            equal(i.response.setTTL.args[0][0], 20);
-        }
-    }));
-
     test('use country providers; baz fastest of those', testHandleRequest({
         avail: {
             foo: { avail: 100 },
@@ -317,38 +253,6 @@
             equal(i.response.respond.args[0][0], 'foo');
             equal(i.response.respond.args[0][1], 'www.foo.com');
             equal(i.response.setReasonCode.args[0][0], 'E');
-            equal(i.response.setTTL.args[0][0], 20);
-        }
-    }));
-
-    test('only invalid RTT data for available candidates', testHandleRequest({
-        avail: {
-            foo: { avail: 100 },
-            bar: { avail: 100 },
-            baz: { avail: 100 },
-            qux: { avail: 100 }
-        },
-        sonar: {
-            foo: '1.000000',
-            bar: '1.000000',
-            baz: '1.000000',
-            qux: '1.000000'
-        },
-        rtt: {
-            foo: { 'http_rtt': 4 },
-            bar: { 'http_rtt': 4 },
-            baz: { 'http_rtt': 4 },
-            qux: { 'http_rtt': 4 }
-        },
-        setup: function(i) {
-            i.request.getProbe.withArgs('avail').returns(this.avail);
-            i.request.getProbe.withArgs('http_rtt').returns(this.rtt);
-            i.request.getData.returns(this.sonar);
-        },
-        verify: function(i) {
-            equal(i.response.respond.args[0][0], 'foo');
-            equal(i.response.respond.args[0][1], 'www.foo.com');
-            equal(i.response.setReasonCode.args[0][0], 'F');
             equal(i.response.setTTL.args[0][0], 20);
         }
     }));

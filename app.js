@@ -5,30 +5,19 @@ var handler = new OpenmixApplication({
         'tm-mg': 'tm-mg.jsdelivr.net',
         'keycdn': 'jsdelivr-cb7.kxcdn.com'
     },
+    // Use countryMapping to give consideration to additional providers for
+    // specific countries:
     countryMapping: {
-        'MG': [ 'tm-mg', 'cloudflare']
+        'MG': [ 'tm-mg', 'maxcdn', 'cloudflare', 'keycdn' ]
     },
-    asnMapping: {
-        '36114': [ 'maxcdn' ], // Las Vegas 2
-        '36351': [ 'maxcdn' ], // San Jose + Washington
-        '15003': [ 'maxcdn' ], // Chicago
-        '8972': [ 'maxcdn' ], // Strasbourg
-        '32489': [ 'cloudflare' ], // Canada
-        '32613': [ 'cloudflare' ], // Canada
-        '25137': [ 'cloudflare' ], // Portugal
-        '58206': [ 'cloudflare' ], // Portugal
-        '16265': [ 'maxcdn' ], // Amsterdam
-        '30736': [ 'maxcdn' ] // Denmark
-    },
-    defaultProviders: [ 'maxcdn', 'cloudflare', 'keycdn' ],
+    defaultProviders: [ 'maxcdn', 'cloudflare', 'keycdn'  ],
     lastResortProvider: 'maxcdn',
     defaultTtl: 20,
     availabilityThresholds: {
         normal: 92,
         pingdom: 50
     },
-    sonarThreshold: 0.95,
-    minValidRtt: 4
+    sonarThreshold: 0.95
 });
 
 function init(config) {
@@ -88,21 +77,11 @@ function OpenmixApplication(settings) {
                 && (parseFloat(sonar[alias]) >= settings.sonarThreshold);
         }
 
-        /**
-         * @param {{http_rtt:number}} candidate
-         */
-        function filterInvalidRtt(candidate) {
-            /* jshint camelcase:false */
-            return candidate.http_rtt >= settings.minValidRtt;
-            /* jshint camelcase:true */
-        }
-
         // Application logic here
         reasons = {
             rtt: 'A',
             singleAvailableCandidate: 'D',
-            noneAvailableOrNoRtt: 'E',
-            missingRttForAvailableCandidates: 'F'
+            noneAvailableOrNoRtt: 'E'
         };
 
         if (settings.countryMapping) {
@@ -110,14 +89,6 @@ function OpenmixApplication(settings) {
                 subpopulation = settings.countryMapping[request.country];
             }
         }
-
-        if (settings.asnMapping) {
-            if (request.asn in settings.asnMapping) {
-                subpopulation = settings.asnMapping[request.asn];
-                availabilityThreshold = settings.availabilityThresholds.pingdom;
-            }
-        }
-        //console.log('subpop: ' + JSON.stringify(subpopulation));
 
         sonar = request.getData('sonar');
         candidates = filterObject(request.getProbe('avail'), filterCandidates);
@@ -135,19 +106,9 @@ function OpenmixApplication(settings) {
             decisionReasons.push(reasons.noneAvailableOrNoRtt);
             decisionTtl = decisionTtl || settings.defaultTtl;
         } else {
-            candidates = filterObject(candidates, filterInvalidRtt);
-            //console.log('candidates (rtt filtered): ' + JSON.stringify(candidates));
-            candidateAliases = Object.keys(candidates);
-
-            if (!candidateAliases.length) {
-                decisionAlias = settings.lastResortProvider;
-                decisionReasons.push(reasons.missingRttForAvailableCandidates);
-                decisionTtl = decisionTtl || settings.defaultTtl;
-            } else {
-                decisionAlias = getLowest(candidates, 'http_rtt');
-                decisionReasons.push(reasons.rtt);
-                decisionTtl = decisionTtl || settings.defaultTtl;
-            }
+            decisionAlias = getLowest(candidates, 'http_rtt');
+            decisionReasons.push(reasons.rtt);
+            decisionTtl = decisionTtl || settings.defaultTtl;
         }
 
         response.respond(decisionAlias, settings.providers[decisionAlias]);
