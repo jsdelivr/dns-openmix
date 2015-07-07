@@ -14,8 +14,7 @@ var handler = new OpenmixApplication({
     lastResortProvider: 'maxcdn',
     defaultTtl: 20,
     availabilityThresholds: {
-        normal: 92,
-        pingdom: 50
+        normal: 92
     },
     sonarThreshold: 0.95
 });
