@@ -19,7 +19,9 @@ var handler = new OpenmixApplication({
     availabilityThresholds: {
         normal: 93
     },
-    sonarThreshold: 0.95
+    //Set Fusion Sonar threshold for availability for the platform to be included.
+    // sonar values are between 0 - 5
+    fusionSonarThreshold: 2
 });
 
 function init(config) {
@@ -60,9 +62,14 @@ function OpenmixApplication(settings) {
         var reasons,
             candidates,
             candidateAliases,
-            sonar,
+            dataFusionAliases,
+            dataAvail = request.getProbe('avail'),
+            dataRtt = request.getProbe('http_rtt'),
+            /** @type { !Object.<string, { health_score: { value:string }, availability_override:string}> } */
+            dataFusion = parseFusionData(request.getData('fusion')),
             subpopulation = settings.defaultProviders,
             availabilityThreshold = settings.availabilityThresholds.normal,
+            country = request.country,
             decisionAlias,
             decisionReasons = [],
             decisionTtl;
@@ -71,12 +78,22 @@ function OpenmixApplication(settings) {
          * @param {{avail:number}} candidate
          * @param {string} alias
          */
-        function filterCandidates(candidate, alias) {
+        function filterAvailCandidates(candidate, alias) {
+            return (-1 < subpopulation.indexOf(alias))
+                && (candidate.avail !== undefined)
+                && (candidate.avail >= availabilityThreshold);
+        }
+
+        /**
+         * @param {{avail:number}} candidate
+         * @param {string} alias
+         */
+        function filterAvailAndFusionSonarCandidates(candidate, alias) {
             return (-1 < subpopulation.indexOf(alias))
                 && (candidate.avail !== undefined)
                 && (candidate.avail >= availabilityThreshold)
-                && (sonar[alias] !== undefined)
-                && (parseFloat(sonar[alias]) >= settings.sonarThreshold);
+                && (dataFusion[alias] !== undefined)
+                && (dataFusion[alias].health_score.value > settings.fusionSonarThreshold);
         }
 
         // Application logic here
@@ -87,29 +104,46 @@ function OpenmixApplication(settings) {
         };
 
         if (settings.countryMapping) {
-            if (settings.countryMapping[request.country]) {
-                subpopulation = settings.countryMapping[request.country];
+            if (settings.countryMapping[country] !== undefined) {
+                subpopulation = settings.countryMapping[country];
             }
         }
 
-        sonar = request.getData('sonar');
-        candidates = filterObject(request.getProbe('avail'), filterCandidates);
-        //console.log('candidates: ' + JSON.stringify(candidates));
-        candidates = joinObjects(candidates, request.getProbe('http_rtt'), 'http_rtt');
-        //console.log('candidates (with rtt): ' + JSON.stringify(candidates));
-        candidateAliases = Object.keys(candidates);
+        if (Object.keys(dataAvail).length > 0 && Object.keys(dataRtt).length > 0) {
+            if (Object.keys(dataFusion).length > 0) {
+                dataFusionAliases = Object.keys(dataFusion);
+                //check if "Big Red Button" isn't activated
+                if (dataFusion[dataFusionAliases[0]].availability_override === undefined) {
+                    // remove any that don't meet the Fusion Sonar threshold
+                    candidates = filterObject(dataAvail, filterAvailAndFusionSonarCandidates);
+                }
+            }
+            if (candidates === undefined) {
+                candidates = filterObject(dataAvail, filterAvailCandidates);
+            }
 
-        if (1 === candidateAliases.length) {
-            decisionAlias = candidateAliases[0];
-            decisionReasons.push(reasons.singleAvailableCandidate);
-            decisionTtl = decisionTtl || settings.defaultTtl;
-        } else if (0 === candidateAliases.length) {
+            //console.log('candidates: ' + JSON.stringify(candidates));
+            candidates = joinObjects(candidates, dataRtt, 'http_rtt');
+            //console.log('candidates (with rtt): ' + JSON.stringify(candidates));
+            candidateAliases = Object.keys(candidates);
+
+            if (1 === candidateAliases.length) {
+                decisionAlias = candidateAliases[0];
+                decisionReasons.push(reasons.singleAvailableCandidate);
+                decisionTtl = decisionTtl || settings.defaultTtl;
+            } else if (0 === candidateAliases.length) {
+                decisionAlias = settings.lastResortProvider;
+                decisionReasons.push(reasons.noneAvailableOrNoRtt);
+                decisionTtl = decisionTtl || settings.defaultTtl;
+            } else {
+                decisionAlias = getLowest(candidates, 'http_rtt');
+                decisionReasons.push(reasons.rtt);
+                decisionTtl = decisionTtl || settings.defaultTtl;
+            }
+        }
+        else {
             decisionAlias = settings.lastResortProvider;
             decisionReasons.push(reasons.noneAvailableOrNoRtt);
-            decisionTtl = decisionTtl || settings.defaultTtl;
-        } else {
-            decisionAlias = getLowest(candidates, 'http_rtt');
-            decisionReasons.push(reasons.rtt);
             decisionTtl = decisionTtl || settings.defaultTtl;
         }
 
@@ -186,4 +220,24 @@ function OpenmixApplication(settings) {
 
         return candidate;
     }
+
+    /**
+     * @param {!Object} data
+     */
+    function parseFusionData(data) {
+        var keys = Object.keys(data),
+            i = keys.length,
+            key;
+        while (i --) {
+            key = keys[i];
+            try {
+                data[key] = JSON.parse(data[key]);
+            }
+            catch (e) {
+                delete data[key];
+            }
+        }
+        return data;
+    }
+
 }
