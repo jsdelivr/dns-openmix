@@ -11,13 +11,14 @@ var handler = new OpenmixApplication({
     countryMapping: {
         'MG': [ 'tm-mg', 'maxcdn', 'cloudflare', 'keycdn' ],
         'CN': [ 'quantil'],
-        'TH': [ 'maxcdn', 'cloudflare', 'keycdn', 'quantil']
+        'TH': [ 'maxcdn', 'cloudflare', 'keycdn', 'quantil'],
+        'BR': [ 'cloudflare']
     },
     defaultProviders: [ 'maxcdn', 'cloudflare', 'keycdn' ],
     lastResortProvider: 'maxcdn',
     defaultTtl: 20,
     availabilityThresholds: {
-        normal: 93
+        normal: 95
     },
     //Set Fusion Sonar threshold for availability for the platform to be included.
     // sonar values are between 0 - 5
