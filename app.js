@@ -2,14 +2,12 @@ var handler = new OpenmixApplication({
     providers: {
         'cloudflare': 'cdn.jsdelivr.net.cdn.cloudflare.net',
         'maxcdn': 'jsdelivr3.dak.netdna-cdn.com',
-        'tm-mg': 'tm-mg.jsdelivr.net',
         'keycdn': 'jsdelivr-cb7.kxcdn.com',
         'quantil': 'cdn.jsdelivr.net.mwcloudcdn.com'
     },
     // Use countryMapping to give consideration to additional providers for
     // specific countries:
     countryMapping: {
-        'MG': [ 'tm-mg', 'maxcdn', 'cloudflare', 'keycdn' ],
         'CN': [ 'quantil'],
         'TH': [ 'maxcdn', 'cloudflare', 'keycdn', 'quantil'],
         'BR': [ 'cloudflare']
