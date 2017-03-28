@@ -9,11 +9,11 @@ var handler = new OpenmixApplication({
     // specific countries:
     countryMapping: {
         'CN': [ 'quantil'],
-        'TH': [ 'maxcdn', 'cloudflare', 'keycdn', 'quantil'],
+        'TH': [ 'maxcdn', 'cloudflare', 'quantil'],
         'BR': [ 'cloudflare']
     },
-    defaultProviders: [ 'maxcdn', 'cloudflare', 'keycdn' ],
-    lastResortProvider: 'maxcdn',
+    defaultProviders: [ 'maxcdn', 'cloudflare' ],
+    lastResortProvider: 'cloudflare',
     defaultTtl: 20,
     availabilityThresholds: {
         normal: 95
