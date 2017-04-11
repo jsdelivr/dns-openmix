@@ -3,7 +3,8 @@ var handler = new OpenmixApplication({
         'cloudflare': 'cdn.jsdelivr.net.cdn.cloudflare.net',
         'maxcdn': 'jsdelivr3.dak.netdna-cdn.com',
         'keycdn': 'jsdelivr-cb7.kxcdn.com',
-        'quantil': 'cdn.jsdelivr.net.mwcloudcdn.com'
+        'quantil': 'cdn.jsdelivr.net.mwcloudcdn.com',
+        'fastly': 'dualstack.i2.shared.global.fastly.net'
     },
     // Use countryMapping to give consideration to additional providers for
     // specific countries:
@@ -12,7 +13,7 @@ var handler = new OpenmixApplication({
         'TH': [ 'maxcdn', 'cloudflare', 'quantil'],
         'BR': [ 'cloudflare']
     },
-    defaultProviders: [ 'maxcdn', 'cloudflare' ],
+    defaultProviders: [ 'maxcdn', 'cloudflare', 'fastly' ],
     lastResortProvider: 'cloudflare',
     defaultTtl: 20,
     availabilityThresholds: {
