@@ -4,7 +4,7 @@ var handler = new OpenmixApplication({
         'maxcdn': 'jsdelivr3.dak.netdna-cdn.com',
         'keycdn': 'jsdelivr-cb7.kxcdn.com',
         'quantil': 'cdn.jsdelivr.net.mwcloudcdn.com',
-        'fastly': 'dualstack.i2.shared.global.fastly.net'
+        'fastly': 'f3.shared.global.fastly.net'
     },
     // Use countryMapping to give consideration to additional providers for
     // specific countries:
