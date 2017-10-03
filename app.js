@@ -132,7 +132,7 @@ function OpenmixApplication(settings) {
                 decisionReasons.push(reasons.singleAvailableCandidate);
                 decisionTtl = decisionTtl || settings.defaultTtl;
             } else if (0 === candidateAliases.length) {
-                decisionAlias = settings.lastResortProvider;
+                decisionAlias = country === 'CN' ? 'quantil' : settings.lastResortProvider;
                 decisionReasons.push(reasons.noneAvailableOrNoRtt);
                 decisionTtl = decisionTtl || settings.defaultTtl;
             } else {
@@ -142,7 +142,7 @@ function OpenmixApplication(settings) {
             }
         }
         else {
-            decisionAlias = settings.lastResortProvider;
+            decisionAlias = country === 'CN' ? 'quantil' : settings.lastResortProvider;
             decisionReasons.push(reasons.noneAvailableOrNoRtt);
             decisionTtl = decisionTtl || settings.defaultTtl;
         }
