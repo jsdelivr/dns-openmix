@@ -10,6 +10,7 @@ var handler = new OpenmixApplication({
     // specific countries:
     countryMapping: {
         'CN': [ 'quantil'],
+        'MO': [ 'quantil'],
         'TH': [ 'maxcdn', 'cloudflare', 'quantil'],
         'BR': [ 'cloudflare']
     },
