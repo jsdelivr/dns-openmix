@@ -1,7 +1,7 @@
 var handler = new OpenmixApplication({
     providers: {
         'cloudflare': 'cdn.jsdelivr.net.cdn.cloudflare.net',
-        'maxcdn': 'jsdelivr3.dak.netdna-cdn.com'
+        'maxcdn': 'jsdelivr3.dak.netdna-cdn.com',
         'quantil': 'cdn.jsdelivr.net.mwcloudcdn.com',
         'fastly': 'dualstack.f3.shared.global.fastly.net'
     },
