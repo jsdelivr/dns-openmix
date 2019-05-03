@@ -1,5 +1,7 @@
 # jsDelivr Openmix DNS application
 
+#### DEPRICATED - https://www.jsdelivr.com/blog/introducing-next-gen-load-balancing-at-jsdelivr/
+
 ## Description
 
 This is the live code that jsDelivr uses to do load balancing.
